@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+:root {
+  --white: #ffffff;
+  --limewhite: #e3eef3;
+  --gray: #72848d;
+  --darkBlue: #1a313e;
+  --sepratorgray: #bbc8ce;
+}
+.login {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+}
+.container {
+  width: 20.375rem;
+  height: 31.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container h1 {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 37px;
+  color: var(--darkBlue);
+}
+
+.inputcontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #1a313e;
+  padding-top: 0.78rem;
+  padding-bottom: 0.78rem;
+}
+input[type="text"],
+input[type="password"] {
+  width: 20.375rem;
+  outline: none;
+  background: #f0f7fb;
+  border: 1px solid #bbc8ce;
+  height: 2.874rem;
+  border-radius: 6px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 19px;
+  padding: 0 0.5rem;
+  color: var(--darkBlue);
+}
+
+.buttonlogin {
+  width: 17.0625rem;
+  height: 2.874rem;
+  background: #5fa8d3;
+  border-radius: 5px;
+  border: none;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--white);
+  /* margin: 2.25rem 0; */
+  margin-top: 2.25rem;
+  margin-bottom: 1rem;
+}
+.buttonsignup {
+  width: 17.0625rem;
+  height: 2.874rem;
+  background: var(--limewhite);
+  border-radius: 5px;
+  border: none;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--gray);
+  margin-top: 1rem;
+  /* color: #72848d70; */
+}
+
+.seperatorcontainer {
+  width: 17.0625rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.seperatorcontainer span {
+  font-size: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  color: var(--sepratorgray);
+}
+.seperator {
+  width: 7.28rem;
+  height: 1px;
+  background-color: var(--sepratorgray);
+  /* margin-bottom: 1rem; */
+}

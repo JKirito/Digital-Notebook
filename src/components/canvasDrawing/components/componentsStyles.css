@@ -1,0 +1,8 @@
+.d_gridcanvas {
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
