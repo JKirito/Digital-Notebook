@@ -121,3 +121,35 @@
   display: grid;
   place-items: center;
 }
+
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.modal_design {
+  width: 400px;
+  height: 200px;
+  background-color: white;
+  border-radius: 8px;
+  font-family: "Roboto", sans-serif;
+}
+.modal_createDocument {
+  height: 60px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+.modal_content {
+  display: grid;
+  place-items: center;
+}
+.document_button {
+}
