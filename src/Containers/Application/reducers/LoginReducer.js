@@ -27,6 +27,16 @@ const LoginReducer = (state = initialState, action) => {
                     user: null,
                     error: action.payload,
             };
+        case ActionTypes.removeLoggedInError:
+            return {
+                ...state,
+                error: null,
+            };
+        case ActionTypes.setLoggedInError:
+            return {
+                ...state,
+                error: action.payload,
+            };
         default:
             return state;
     }

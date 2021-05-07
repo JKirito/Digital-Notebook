@@ -31,6 +31,11 @@ const SignupReducer = (state = initialState, action) => {
                     error: action.payload.error,
                     success: action.payload.success,
             };
+        case ActionTypes.setSignupError:
+            return {
+                ...state,
+                error: null,
+            };
         default:
             return {
                 ...state,

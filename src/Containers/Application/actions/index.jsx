@@ -172,6 +172,7 @@ export const action_WriteDataToNotebook = ({ data, page, doc_name }) => {
         })
     };
 }
+
 export const action_setNotebookToNotebookReducer = ({ doc_name, current_page, total_page, notebook_data }) => {
     return async (dispatch, getState) => {
         // console.log(getState());

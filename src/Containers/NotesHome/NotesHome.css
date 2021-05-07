@@ -1,0 +1,123 @@
+.groupsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Roboto";
+  margin-top: 40px;
+}
+.noteshomelayout {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+}
+.grouplist {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  place-items: center;
+}
+.group {
+  width: 200px;
+  height: 200px;
+  min-width: 150px;
+  background-color: #dadada;
+  color: #484848;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Roboto";
+  padding-left: 20px;
+}
+.NotesHome_file {
+  width: 100%;
+  background-color: #dadada;
+  padding: 0.8rem;
+  border-radius: 6px;
+  color: #484848;
+}
+.NotesHome_file > .upper {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Roboto", sans-serif;
+}
+.NotesHome_file > .upper > .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.NotesHome_file > .lower {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.fileContainer {
+  margin-top: 40px;
+}
+.groupsContainer_title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+.fileContainer_title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+  .group {
+    width: 120px;
+    height: 120px;
+  }
+  .grouplist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .home_createDocumentButton > div {
+    width: 40% !important;
+  }
+  .home_createDocumentButton {
+    width: 100% !important;
+  }
+}
+@media only screen and (max-width: 968px) {
+  .grouplist {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media only screen and (max-width: 708px) {
+  .group {
+    width: 150px;
+    height: 150px;
+  }
+}
+@media only screen and (max-width: 538px) {
+  .grouplist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.home_createDocumentButton {
+  background-color: #525252;
+  border: none;
+  border-radius: 5px;
+  height: 50px;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  margin: 10px 0;
+  display: grid;
+  place-items: center;
+  width: 40%;
+}
+.home_createDocumentButton > div {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.c-align {
+  display: grid;
+  place-items: center;
+}

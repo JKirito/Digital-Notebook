@@ -8,7 +8,6 @@ import { db } from '../../Containers/Application/firebase';
 import "./Notebooks.css";
 
 function Notebooks() {
-
     // g_<name> represents values from global State.
     const g_user = useSelector(state => state.AuthReducer.user);
     const g_userData = useSelector(state => state.UserReducer.userdata);
@@ -20,11 +19,7 @@ function Notebooks() {
     const addFirebaseRealtimeListenerToNotebooks = () => {
         // console.dir(g_user.uid);
         db.collection(FirebaseCollections.users).doc(g_user.uid).collection(FirebaseCollections.notebooks).onSnapshot((querySnapshot) => {
-            // console.log("Change Occured")
             dispatch(action_FetchNotebooks(g_user.uid));
-            // querySnapshot.forEach(doc => {
-            //     // console.log(doc.data(), doc.id);
-            // });
         });
     }
 
@@ -93,7 +88,7 @@ const NOTEBOOK_IMGCONATINER = styled.div`
     height: 60%;
     display: flex;
     justify-content: center;
-    align-items-center;
+    align-items: center;
 `;
 const NOTEBOOK_BOTTOMCONTAINER = styled.div`
     height: 40%;
