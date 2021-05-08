@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute.jsx';
 import NotebookHolder from '../../components/NotebookHolder/NotebookHolder.jsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import NotesHome from '../NotesHome/NotesHome.jsx';
+import GroupHome from '../GroupHome/GroupHome.jsx';
 
 function Application() {
     return (
@@ -32,6 +33,7 @@ const App = () => {
                 {/* <Route path='/notebooks' component={NotebookHolder} /> */}
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
+                <Route path='/class' component={GroupHome} />
             </Switch>
         </AnimatePresence>
     );

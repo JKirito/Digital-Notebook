@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { action_CreateNewNotebook, action_FetchNotebooks } from '../Application/actions';
 import { FirebaseCollections } from '../Application/Actiontypes';
-import { db } from '../Application/firebase';
+import { db, timestamp } from '../Application/firebase';
 import NavBar from '../Home/NavBar'
 import "./NotesHome.css";
 
@@ -50,9 +50,10 @@ function NotesHome() {
 
     return (
         <motion.div style={{
-            width: "100vw", display: "flex",
+            display: "flex",
             justifyContent: "space-evenly",
             marginTop: "40px",
+            transform: 0,
         }}
             id='NotesHomeContainer'
             initial="out"
@@ -97,7 +98,7 @@ const FilesContainer = () => {
             return <>
                 {
                     props.length > 0 && props.map(el => {
-                        return <File key={el.doc_name} title={el.doc_name} subtitle='Testting' />
+                        return <File key={el.doc_name} title={el.doc_name} subtitle='Testting' date={el.doc_data.createdAt} />
                     })
                 }
             </>
@@ -117,16 +118,22 @@ const FilesContainer = () => {
     );
 }
 
-const File = ({ title, subtitle }) => {
+const File = ({ title, subtitle, date }) => {
     const history = useHistory();
     const redirectToNotebook = () => {
         history.push(`/notebooks/${title}`);
     };
+    let t = date.seconds;
+    let x = new Date(t * 1000);
+
     return (
         <div style={{ marginTop: "5px" }} className='NotesHome_file' onClick={redirectToNotebook}>
             <div className="upper">
                 <div className='title'>{title}</div>
-                <div>{new Date().toLocaleDateString()}</div>
+                <div>
+                    {/* {new Date().toLocaleDateString()} */}
+                    {`${x.getDate()}/${x.getMonth() + 1}/${x.getFullYear()}`}
+                </div>
             </div>
             <div className='lower'>
                 <div>{subtitle}</div>
@@ -156,13 +163,25 @@ const CreateDocumentButton = ({ setShowModal }) => {
     );
 }
 
-const backdrop = {
+const backdropAnim = {
     visible: {
         opacity: 1,
     },
     hidden: {
         opacity: 0,
     },
+}
+const modalAnim = {
+    in: {
+        y: "100px",
+    },
+    out: {
+        y: 0,
+    },
+    exit: {
+        y: "500px",
+        // transition: { delay: 0.5 },
+    }
 }
 const Modal = ({ showModal, setShowModal, g_user }) => {
     const doc_fieldRef = useRef();
@@ -175,11 +194,17 @@ const Modal = ({ showModal, setShowModal, g_user }) => {
         doc_fieldRef.current.value = '';
         setShowModal(false);
     }
+    const closeModal = () => {
+        setShowModal(false);
+    }
     return (
         <AnimatePresence exitBeforeEnter>
             {
-                showModal && <motion.div className="backdrop" variants={backdrop} initial="hidden" animate="visible">
-                    <motion.div className="modal_design">
+                showModal && <motion.div className="backdrop" variants={backdropAnim} initial="hidden" animate="visible" exit="hidden">
+                    <motion.div className="modal_design" variants={modalAnim} initial="in" animate="out" exit='exit'>
+                        <div className='modal_cross' onClick={closeModal}>
+                            <i className='fas fa-times fa-lg'></i>
+                        </div>
                         <div className="modal_createDocument">Create Document</div>
                         <div className="modal_content">
                             <div className="inputcontainer">

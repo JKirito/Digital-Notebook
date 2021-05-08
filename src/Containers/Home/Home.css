@@ -5,14 +5,14 @@
 .home_navbar {
   height: 50px;
   display: flex;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   align-items: center;
 }
 .home_footer {
   height: 60px;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
   width: 40vw;
