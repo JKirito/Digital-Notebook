@@ -51,7 +51,7 @@ const Footer = ({ props, dispatch, redraw }) => {
     }, []);
     return <div className="d_headerfooterbasic d_footer d_iconcolor">
         <div className="d_iconContainer" id="drawbutton" onClick={ActivateDrawBrush}>
-            <i className="fas fa-highlighter fa-lg"></i>
+            <i className=" fas fa-highlighter fa-lg"></i>
         </div>
         <div className="d_iconContainer" id="eraserbutton" onClick={ActivateEraser}>
             <i className="fas fa-eraser fa-lg"></i>

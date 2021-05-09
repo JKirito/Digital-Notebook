@@ -97,18 +97,58 @@
   }
 }
 .home_createDocumentButton {
+  position: relative;
   background-color: #525252;
   border: none;
-  border-radius: 5px;
-  height: 50px;
+  border-radius: 0.5rem;
+  outline: none;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 1px 1px #999;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  height: 80%;
   font-family: "Roboto", sans-serif;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
   color: white;
   margin: 10px 0;
   display: grid;
   place-items: center;
   width: 40%;
+}
+.home_createDocumentButton:hover {
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.24),0 1.7rem 5rem 0 rgba(0,0,0,0.19);
+}
+
+.home_createDocumentButton:after {
+  content: "";
+  background: #525252;
+  display: flex;
+  direction: column;
+  justify-content: center;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
+}
+.home_createDocumentButton:active {
+  background-color: #525252;
+  box-shadow: 0 0.5rem #666;
+  transform: translateY(0.4rem);
+}
+.home_createDocumentButton:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
 }
 .home_createDocumentButton > div {
   display: flex;
@@ -152,4 +192,22 @@
   place-items: center;
 }
 .document_button {
-}
+  margin-top: 0.6rem;
+   position: relative;
+  background-color: #525252;
+    color: white;
+  padding: 0.7rem;
+   outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  }
