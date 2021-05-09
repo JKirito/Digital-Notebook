@@ -1,0 +1,223 @@
+.groupsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Roboto";
+  /* margin-top: 60px; */
+}
+.noteshomelayout {
+  width: 90%;
+  display: flex;
+  height: calc(100vh - 60px);
+  /* overflow-y: scroll; */
+  /* height: calc(100vw - 50px); */
+  flex-direction: column;
+  margin-top: 60px;
+  /* justify-content: space-evenly; */
+}
+.grouplist {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  width: 100%;
+  place-items: center;
+}
+.group {
+  width: 200px;
+  height: 200px;
+  min-width: 150px;
+  background-color: #dadada;
+  color: #484848;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  padding-left: 20px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.files_list {
+  overflow-y: scroll;
+  padding: 0.56rem 0;
+  height: 39vh;
+}
+.NotesHome_file {
+  width: 100%;
+  background-color: #dadada;
+  padding: 0.8rem;
+  border-radius: 6px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  color: #484848;
+}
+.NotesHome_file > .upper {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Roboto", sans-serif;
+}
+.NotesHome_file > .upper > .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.NotesHome_file > .lower {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.fileContainer {
+  margin-top: 40px;
+}
+.groupsContainer_title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+.fileContainer_title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+  .group {
+    width: 120px;
+    height: 120px;
+  }
+  .grouplist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .home_createDocumentButton > div {
+    width: 40% !important;
+  }
+  .home_createDocumentButton {
+    width: 100% !important;
+  }
+}
+@media only screen and (max-width: 968px) {
+  .grouplist {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media only screen and (max-width: 708px) {
+  .group {
+    width: 150px;
+    height: 150px;
+  }
+}
+@media only screen and (max-width: 538px) {
+  .grouplist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.home_createDocumentButton {
+  position: relative;
+  background-color: #525252;
+  border: none;
+  border-radius: 5px;
+  height: 50px;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  margin: 10px 0;
+  display: grid;
+  place-items: center;
+  width: 40%;
+  overflow: hidden;
+}
+.home_createDocumentButton:hover {
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.24),0 1.7rem 5rem 0 rgba(0,0,0,0.19);
+}
+
+.home_createDocumentButton:after {
+  content: "";
+  background: #525252;
+  display: flex;
+  direction: column;
+  justify-content: center;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
+}
+.home_createDocumentButton:active {
+  background-color: #525252;
+  box-shadow: 0 1px 1px #666;
+  transform: translateY(0.4rem);
+}
+.home_createDocumentButton:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
+}
+
+.home_createDocumentButton > div {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.c-align {
+  display: grid;
+  place-items: center;
+}
+
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.modal_design {
+  position: relative;
+  width: 400px;
+  height: 220px;
+  max-width: 90%;
+  max-height: 100%;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  font-family: "Roboto", sans-serif;
+}
+.modal_createDocument {
+  height: 60px;
+  display: grid;
+  place-items: center;
+  font-family: "Roboto", sans-serif;
+  color: #333333;
+  font-size: 22px;
+  font-weight: bold;
+}
+.modal_content {
+  display: grid;
+  place-items: center;
+}
+.document_button {
+  margin-top: 10px;
+  min-width: 64px;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  font-size: 0.875rem;
+  font-family: "Roboto", sans-serif;
+  background-color: #525252;
+  color: white;
+  border: none;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.modal_cross {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
