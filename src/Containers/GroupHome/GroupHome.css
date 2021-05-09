@@ -1,0 +1,122 @@
+.grouphome {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.grouphome_header {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  padding: 1rem 0;
+}
+.grouphome_createbutton {
+  min-width: 100px;
+  padding: 0.6rem;
+  /* margin: 0 auto; */
+  font-weight: bold;
+  background-color: #39393a;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.grouphome_section {
+  width: 90%;
+  margin: auto;
+  display: grid;
+  justify-items: center;
+  grid-gap: 6px 4px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.grouphome_classbox {
+  display: grid;
+  place-items: center;
+  justify-items: start;
+  align-content: start;
+  padding: 0.8rem;
+  width: 200px;
+  height: 170px;
+  min-height: 100px;
+  min-width: 140px;
+  font-family: "Roboto", sans-serif;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.grouphome_classbox > .title {
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 4px;
+}
+.grouphome_classbox > .description {
+  font-size: 12px;
+  margin-top: 4px;
+}
+.grouphome_classbox > .joinButton {
+  min-width: 100px;
+  padding: 0.6rem;
+  margin: 20px auto;
+  font-weight: bold;
+  background-color: #414141;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.grouphome_overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+.grouphome_content {
+  position: relative;
+  background-color: white;
+  width: 450px;
+  min-width: 200px;
+  height: 150px;
+  min-height: 150px;
+  user-select: none;
+  display: grid;
+  place-items: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.grouphome_content > button {
+  min-width: 100px;
+  padding: 0.6rem;
+  margin: 20px auto;
+  font-weight: bold;
+  background-color: #39393a;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+.grouphome_overlaycross {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
