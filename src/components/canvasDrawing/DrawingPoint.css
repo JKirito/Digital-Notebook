@@ -4,26 +4,6 @@
   --d_lightGray: #717171;
   --d_activeColor: gray;
 }
-.previous {
-  top: 0;
-  left: 0;
-  position: absolute;
-  text-decoration: none;
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #f1f1f1;
-  color: black;
-
-}
-
-.previous:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.round {
-  border-radius: 50%;
-}
 
 .d_header {
   position: absolute;

@@ -50,7 +50,6 @@ const Footer = ({ props, dispatch, redraw }) => {
         ActivateDrawBrush();
     }, []);
     return <div className="d_headerfooterbasic d_footer d_iconcolor">
-            <a href="#" class="previous round" onclick="history.go(-1)">&#8249;</a>
         <div className="d_iconContainer" id="drawbutton" onClick={ActivateDrawBrush}>
             <i className=" fas fa-highlighter fa-lg"></i>
         </div>
