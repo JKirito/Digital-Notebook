@@ -2,10 +2,41 @@
   margin-top: 60px;
 }
 .classpage__waitinglist {
-  background-color: rgb(65, 70, 68);
+  background-color: #c4c4c4;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 8px;
+  padding: 10px 6px;
 }
 
 .classpage__waitinglist__user {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  width: 100%;
+  max-width: 95%;
+  margin: 0 auto;
+  height: 36px;
+  border-radius: 4px;
+  background-color: #4d4c4c;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  /* font-weight: bold; */
+}
+.classpage__waitinglist__buttons > button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  margin: 0 0.1rem;
+}
+.classpage__waitinglist > .heading {
+  /* padding-top: 14px; */
+  margin-bottom: 6px;
+  margin-left: 6px;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
 }

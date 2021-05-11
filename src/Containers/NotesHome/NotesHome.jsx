@@ -142,7 +142,7 @@ const File = ({ title, subtitle, date }) => {
             <div className='lower'>
                 <div>{subtitle}</div>
                 <div>
-                    <i className='fas fa-trash hell'></i>
+                    <i className='fas fa-trash'></i>
                 </div>
             </div>
         </div>

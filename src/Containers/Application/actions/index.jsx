@@ -309,7 +309,7 @@ export const action_addRealTimeListener = () => {
                                     myClassList.push(querySnapshot.data());
                                 } else {
                                     // console.log('Updating')
-                                    let index = documentList.findIndex(x => x.classname == querySnapshot.data().classname);
+                                    let index = myClassList.findIndex(x => x.classname == querySnapshot.data().classname);
                                     myClassList[index] = querySnapshot.data();
                                     // console.dir(documentList[index]);
                                 }
@@ -396,6 +396,26 @@ export const action_fetchClasses = () => {
             }
         }
     };
+}
+
+export const action_RejectUserAccessToClass = ({ classname, user, data }) => {
+    return async (dispatch, getState) => {
+        // console.log(waitinglist)
+        console.dir(data);
+        db.collection(FirebaseCollections.class).doc(classname).update({
+            waitinglist: data,
+        });
+    }
+}
+export const action_AllowUserAccessToClass = ({ classname, user, data }) => {
+    return async (dispatch, getState) => {
+        // console.log(waitinglist)
+        console.dir(data);
+        db.collection(FirebaseCollections.class).doc(classname).update({
+            enrolled: data,
+        });
+        // dispatch(action_RejectUserAccessToClass({ classname: classname, user: user, data: data }));
+    }
 }
 
 // export const action_
