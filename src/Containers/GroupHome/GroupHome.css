@@ -25,6 +25,8 @@
   font-weight: bold;
   background-color: #39393a;
   color: white;
+  margin-left: 2px;
+  margin-right: 2px;
   font-size: 14px;
   border: none;
   border-radius: 4px;
@@ -32,7 +34,7 @@
     0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
 }
 .grouphome_section {
-  width: 90%;
+  width: 100%;
   margin: auto;
   display: grid;
   justify-items: center;
@@ -87,14 +89,17 @@
   z-index: 10;
 }
 .grouphome_content {
-  position: relative;
+  position: absolute;
   background-color: white;
   width: 450px;
-  min-width: 200px;
+  max-width: 95%;
   height: 150px;
   min-height: 150px;
   user-select: none;
   display: grid;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   place-items: center;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
@@ -119,4 +124,16 @@
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+.verticalflex {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.grouphome_list_headline {
+  margin: 1rem 0;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
 }

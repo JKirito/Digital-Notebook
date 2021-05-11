@@ -6,6 +6,7 @@ import SignupReducer from "./SignupReducer";
 import UserReducer from "./UserReducer";
 import CanvasReducer from "./CanvasReducer";
 import SdrawReducer from "./SdrawReducer";
+import ClassReducer from "./ClassReducer";
 
 
 // Exporting All The Reducers
@@ -17,6 +18,7 @@ const allReducers = combineReducers({
     NotebookReducer,
     CanvasReducer,
     SdrawReducer,
+    ClassReducer,
 })
 
 export default allReducers;

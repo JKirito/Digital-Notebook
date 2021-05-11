@@ -13,15 +13,19 @@ function NotesHome() {
     const g_userData = useSelector(state => state.UserReducer.userdata);
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
+    let unsubscribe;
 
     const addFirebaseRealtimeListenerToNotebooks = () => {
         // console.dir(g_user.uid);
-        db.collection(FirebaseCollections.users).doc(g_user.uid).collection(FirebaseCollections.notebooks).onSnapshot((querySnapshot) => {
+        unsubscribe = db.collection(FirebaseCollections.users).doc(g_user.uid).collection(FirebaseCollections.notebooks).onSnapshot((querySnapshot) => {
             dispatch(action_FetchNotebooks(g_user.uid));
         });
     }
     useEffect(() => {
         addFirebaseRealtimeListenerToNotebooks();
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
     useEffect(() => {

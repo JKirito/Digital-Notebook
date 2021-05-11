@@ -25,6 +25,18 @@ export const ActionTypes = {
 
 
 
+    createClassFetchRequest: "CREATE_CLASS_FETCH_REQUEST",
+    createClassFetchSuccess: "CREATE_CLASS_FETCH_SUCCESS",
+    createClassFetchError: "CREATE_CLASS_FETCH_ERROR",
+    createClassResetDefaultState: "CREATE_CLASS_FETCH_ERROR",
+    setClassData: "SET_CLASS_DATA",
+    setMyClasses: "SET_MY_CLASSES",
+    setEnrolledClasses: "SET_ENROLLED_CLASSES",
+
+
+
+
+
     changeCanvasBrushColor: "SET_BRUSH_COLOR",
     changeCanvasBrushSize: "SET_BRUSH_SIZE",
     changeCanvasMaxBoundryHeight: "CHANGE_CANVAS_MAX_BOUNDRY_HEIGHT",
@@ -42,5 +54,6 @@ export const ActionTypes = {
 
 export const FirebaseCollections = {
     users: 'users',
-    notebooks: 'notebooks'
+    notebooks: 'notebooks',
+    class: 'class',
 }

@@ -3,15 +3,18 @@ class UserSchema {
         email,
     }) {
         this.email = email;
+        this.classes = [];
     }
     getUserData = () => {
         return {
             email: this.email,
+            myclass: this.classes,
         };
     }
     createNewUser = () => {
         return {
             email: this.email,
+            myclass: this.classes,
         };
     }
 };

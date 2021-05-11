@@ -9,6 +9,7 @@ import NotebookHolder from '../../components/NotebookHolder/NotebookHolder.jsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import NotesHome from '../NotesHome/NotesHome.jsx';
 import GroupHome from '../GroupHome/GroupHome.jsx';
+import ClassPage from '../Classes/ClassPage.jsx';
 
 function Application() {
     return (
@@ -33,7 +34,8 @@ const App = () => {
                 {/* <Route path='/notebooks' component={NotebookHolder} /> */}
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
-                <Route path='/class' component={GroupHome} />
+                <Route exact path='/class' component={GroupHome} />
+                <Route exact path='/class/:classname' component={ClassPage} />
             </Switch>
         </AnimatePresence>
     );

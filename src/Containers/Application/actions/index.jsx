@@ -187,4 +187,217 @@ export const action_setNotebookToNotebookReducer = ({ doc_name, current_page, to
         })
     }
 }
+
+
+
+
+export const action_createClass = (class_name) => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.createClassFetchRequest,
+        });
+        db.collection(FirebaseCollections.class).doc(class_name).get().then(docSnapshot => {
+            if (docSnapshot.exists) {
+                dispatch({
+                    type: ActionTypes.createClassFetchError,
+                    payload: {
+                        code: 'Document Exists',
+                        message: 'Already a class with Same name Present. Choose a different name'
+                    },
+                })
+                return;
+            } else {
+                db.collection(FirebaseCollections.class).doc(class_name).set({
+                    owner: auth.currentUser?.email,
+                    id: auth.currentUser.uid,
+                    enrolled: [],
+                    waitinglist: [],
+                    classname: class_name,
+                }).then(
+                    dispatch({
+                        type: ActionTypes.createClassFetchSuccess,
+                    })
+                )
+            }
+        }).catch(error => {
+            dispatch({
+                type: ActionTypes.createClassFetchError,
+                payload: error,
+            })
+        });
+    };
+}
+
+export const action_joinClass = (class_name) => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.createClassFetchRequest,
+        });
+        db.collection(FirebaseCollections.class).doc(class_name).get().then(docSnapshot => {
+            if (docSnapshot.exists) {
+                let userdata = docSnapshot.data();
+                if (userdata.id === auth.currentUser.uid) {
+                    dispatch({
+                        type: ActionTypes.createClassFetchError,
+                        payload: {
+                            code: 'You are the Host',
+                            message: 'You are the host of this class. Can directly access it from the my-Class Section',
+                        }
+                    })
+                }
+                else {
+                    let classdata = docSnapshot.data();
+                    let present = false;
+                    classdata.waitinglist.every((doc, index) => {
+                        if (doc.id === auth.currentUser.uid) {
+                            // console.log(`user already in list`)
+                            present = true;
+                            return false;
+                        } else return true;
+                    })
+                    if (!present) {
+                        db.collection(FirebaseCollections.class).doc(class_name).update({
+                            waitinglist: [...classdata.waitinglist, {
+                                id: auth.currentUser.uid,
+                                email: auth.currentUser.email,
+                            }],
+                        })
+                        dispatch({
+                            type: ActionTypes.createClassFetchSuccess,
+                        })
+                    } else {
+                        dispatch({
+                            type: ActionTypes.createClassFetchError,
+                            payload: {
+                                code: 'Already in Waiting room',
+                                message: 'Already present in the Waiting Room for the Class',
+                            }
+                        })
+                    }
+                }
+            } else {
+                dispatch({
+                    type: ActionTypes.createClassFetchError,
+                    payload: {
+                        code: 'no-class-found',
+                        message: 'No such class Exists',
+                    }
+                })
+            }
+        })
+    };
+}
+
+export const action_addRealTimeListener = () => {
+    return async (dispatch, getState) => {
+        if (auth?.currentUser?.uid) {
+            let documentList = [];
+            let myClassList = [];
+            let myEnrolledClassList = [];
+            const classCollection = db.collection(FirebaseCollections.class).onSnapshot(classSnapshot => {
+                const documents = db.collection(FirebaseCollections.class).where('id', '==', `${auth.currentUser.uid}`).get();
+                if (!documents.empty) {
+                    documents.then(doc => {
+                        doc.docs.forEach(el => {
+                            // console.dir(el.id);
+                            db.collection(FirebaseCollections.class).doc(el.id).onSnapshot(querySnapshot => {
+                                // console.log(`Data Changed`);
+                                // console.log(querySnapshot.data().id);
+                                let test = myClassList.findIndex(x => x.classname === querySnapshot.data().classname);
+                                if (test === -1) {
+                                    // console.log(`pushing ${documentList.findIndex(x => x.classname === querySnapshot.data().classname)}`)
+                                    myClassList.push(querySnapshot.data());
+                                } else {
+                                    // console.log('Updating')
+                                    let index = documentList.findIndex(x => x.classname == querySnapshot.data().classname);
+                                    myClassList[index] = querySnapshot.data();
+                                    // console.dir(documentList[index]);
+                                }
+                                dispatch({
+                                    type: ActionTypes.setMyClasses,
+                                    payload: myClassList,
+                                })
+                            })
+                        })
+                    })
+                }
+                const enrolledDocuments = db.collection(FirebaseCollections.class).where('enrolled', 'array-contains', `${auth.currentUser.uid}`).get();
+                if (!enrolledDocuments.empty) {
+                    enrolledDocuments.then(doc => {
+                        doc.docs.forEach(el => {
+                            db.collection(FirebaseCollections.class).doc(el.id).onSnapshot(querySnapshot => {
+                                // console.log(`Data Changed`);
+                                // console.log(querySnapshot.data().id);
+                                let test = myEnrolledClassList.findIndex(x => x.classname === querySnapshot.data().classname);
+                                if (test === -1) {
+                                    // console.log(`pushing ${documentList.findIndex(x => x.classname === querySnapshot.data().classname)}`)
+                                    myEnrolledClassList.push(querySnapshot.data());
+                                } else {
+                                    // console.log('Updating')
+                                    let index = myEnrolledClassList.findIndex(x => x.classname == querySnapshot.data().classname);
+                                    myEnrolledClassList[index] = querySnapshot.data();
+                                    // console.dir(documentList[index]);
+                                }
+                                dispatch({
+                                    type: ActionTypes.setEnrolledClasses,
+                                    payload: myEnrolledClassList,
+                                })
+                            })
+                        })
+
+                    })
+                }
+                // dispatch({
+                //     type: ActionTypes.setClassData,
+                //     payload: documentList,
+                // })
+            }, (error) => {
+                console.log(error);
+            });
+
+        }
+    }
+}
+
+export const action_fetchClasses = () => {
+    return async (dispatch, getState) => {
+        if (auth.currentUser?.uid) {
+            const documents = db.collection(FirebaseCollections.class).where('id', '==', `${auth.currentUser.uid}`).get();
+            if (!documents.empty) {
+
+                documents.then(doc => {
+
+                    let tempdocumentlist = [];
+                    if (doc.docs.length > 0) {
+                        doc.docs.forEach(el => {
+                            tempdocumentlist.push(el.data());
+                        })
+                    }
+                    dispatch({
+                        type: ActionTypes.setMyClasses,
+                        payload: tempdocumentlist,
+                    });
+                })
+            }
+            const enrolledDocuments = db.collection(FirebaseCollections.class).where('enrolled', 'array-contains', `${auth.currentUser.uid}`).get();
+            if (!enrolledDocuments.empty) {
+                enrolledDocuments.then(doc => {
+                    let tempdocumentlist = [];
+                    if (doc.docs.length > 0) {
+                        doc.docs.forEach(el => {
+                            tempdocumentlist.push(el.data());
+                        })
+                    }
+                    dispatch({
+                        type: ActionTypes.setEnrolledClasses,
+                        payload: tempdocumentlist,
+                    });
+                })
+            }
+        }
+    };
+}
+
 // export const action_
+
+

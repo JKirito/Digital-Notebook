@@ -110,7 +110,6 @@
   }
 }
 .home_createDocumentButton {
-  position: relative;
   background-color: #525252;
   border: none;
   border-radius: 5px;
@@ -123,38 +122,7 @@
   display: grid;
   place-items: center;
   width: 40%;
-  overflow: hidden;
 }
-.home_createDocumentButton:hover {
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.24),0 1.7rem 5rem 0 rgba(0,0,0,0.19);
-}
-
-.home_createDocumentButton:after {
-  content: "";
-  background: #525252;
-  display: flex;
-  direction: column;
-  justify-content: center;
-  position: absolute;
-  padding-top: 300%;
-  padding-left: 350%;
-  margin-left: -20px !important;
-  margin-top: -120%;
-  opacity: 0;
-  transition: all 0.8s;
-}
-.home_createDocumentButton:active {
-  background-color: #525252;
-  box-shadow: 0 1px 1px #666;
-  transform: translateY(0.4rem);
-}
-.home_createDocumentButton:active:after {
-  padding: 0;
-  margin: 0;
-  opacity: 1;
-  transition: 0s;
-}
-
 .home_createDocumentButton > div {
   display: flex;
   width: 30%;

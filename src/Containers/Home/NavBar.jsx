@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router';
 import { action_Logout } from '../Application/actions';
 const NavBar = () => {
     const dispatch = useDispatch();
     let user = useSelector(state => state.AuthReducer.user)
+    const history = useHistory();
     const handlelogout = (e) => {
         dispatch(action_Logout());
+        history.push('/');
     }
     const toggleSidebar = () => {
         let sidebar = document.getElementById('home_sidebar');
@@ -18,7 +21,15 @@ const NavBar = () => {
             homeHamburgerMenu.classList.add("color_white");
         }
     }
-
+    const goToHome = () => {
+        history.push('/')
+    }
+    const goToAttendance = () => {
+        history.push('/attendance');
+    }
+    const goToExam = () => {
+        history.push('/exam');
+    }
     return (
         <nav className="home_navbar">
             <div className='home_sidebar' id="home_sidebar">
@@ -32,11 +43,11 @@ const NavBar = () => {
                             <div className='hamburger_userdatasubtitle' style={{ fontSize: "0.9rem" }}>MBA</div>
                         </div>
                     </div>
-                    <div className='hamburger_list'>
+                    <div className='hamburger_list' style={{ userSelect: "none" }}>
                         <ul>
-                            <li className='ml_20'>Home</li>
-                            <li className='ml_20'>Attendance</li>
-                            <li className='ml_20'>Exam</li>
+                            <li className='ml_20' onClick={goToHome}>Home</li>
+                            <li className='ml_20' onClick={goToAttendance}>Attendance</li>
+                            <li className='ml_20' onClick={goToExam}>Exam</li>
                             <li className='ml_20' onClick={handlelogout}>Logout</li>
                         </ul>
                     </div>
