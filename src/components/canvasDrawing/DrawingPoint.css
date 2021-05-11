@@ -4,11 +4,13 @@
   --d_lightGray: #717171;
   --d_activeColor: gray;
 }
+
 .d_header {
   position: absolute;
   left: 0;
   top: 0;
 }
+
 .d_headerfooterbasic {
   height: 3rem; /* 48px */
   width: 100%;
