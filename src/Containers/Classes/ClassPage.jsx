@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { action_RejectUserAccessToClass, action_AllowUserAccessToClass } from '../Application/actions';
 import { auth } from '../Application/firebase';
 import NavBar from '../Home/NavBar';
@@ -10,6 +10,7 @@ function ClassPage() {
     let { classname } = useParams()
     let myclasses = useSelector(state => state.ClassReducer.myclasses)
     let enrolledclasses = useSelector(state => state.ClassReducer.enrolledclasses)
+    let quizList = useSelector(state => state.QuizReducer.quizAvailable)
     const [isHost, setIsHost] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     let filteredArray;
@@ -28,7 +29,7 @@ function ClassPage() {
             {JSON.stringify(isHost)} */}
             <div className='classpageamargintop'>
                 <div>Welcome to class {classname}</div>
-                {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} filteredData={filteredData} /> : <JoinDisplayUI />}
+                {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} filteredData={filteredData} /> : <JoinDisplayUI quizList={quizList} />}
             </div>
         </div>
     )
@@ -36,11 +37,12 @@ function ClassPage() {
 
 const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const rejectUserAccessToClass = (el) => {
         let index = filteredData[0].waitinglist.findIndex(x => x.id === el.id)
         let newArray = filteredData[0].waitinglist;
         newArray.splice(index, 1);
-        console.log(index, newArray)
+        // console.log(index, newArray)
         dispatch(action_RejectUserAccessToClass({ classname: classname, user: auth.currentUser.uid, data: [...newArray] }));
     }
     const allowUserAccessToClass = (el) => {
@@ -53,12 +55,18 @@ const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
         newArray1.splice(index, 1);
         dispatch(action_RejectUserAccessToClass({ classname: classname, user: auth.currentUser.uid, data: [...newArray1] }))
     }
+    const createQuiz = () => {
+        history.push(`/class/createquiz/${classname}`)
+    }
     return (
         <div>
             <h3>Only Visible To Host</h3>
             <div>Assignments</div>
             <div>Attendance</div>
-            <div>Quiz</div>
+            <div>
+                <div>Hosted Quiz List</div>
+                <button className='list__quiz__takebutton' onClick={createQuiz}>Create Quiz</button>
+            </div>
             <div className='classpage__waitinglist'>
                 <p className='heading'>Waiting List</p>
                 <div>
@@ -81,10 +89,31 @@ const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
     );
 };
 
-const JoinDisplayUI = () => {
+const JoinDisplayUI = ({ quizList }) => {
+    const history = useHistory();
+    useEffect(() => {
+        console.log(quizList);
+    }, [quizList])
+    const takeQuiz = (quizname) => {
+        history.push(`/class/quiz/${quizname}`);
+    }
     return (
         <div>
-            <div>Only Visible to Joined Users</div>
+            <div>
+                <div>
+                    Only Visible to Joined Users
+                </div>
+                <div className='list__quiz__container'>
+                    {
+                        quizList && quizList.map(el => (
+                            <div className='list__quiz__item' key={el.quizdata.quizname}>
+                                <p className='list__quiz__name'>{el.quizdata.quizname}</p>
+                                <button className='list__quiz__takebutton' onClick={() => { takeQuiz(el.quizdata.quizname) }}>Start Quiz</button>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
         </div>
     );
 };

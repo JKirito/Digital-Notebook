@@ -1,4 +1,6 @@
 export const ActionTypes = {
+
+    // Generlized Actions
     fetchLoginRequest: "FETCH_LOGIN_REQUEST",
     fetchLoginSuccess: "FETCH_LOGIN_SUCCESS",
     fetchLoginFailure: "FETCH_LOGIN_FAILURE",
@@ -16,6 +18,9 @@ export const ActionTypes = {
     fetchUserDataFailure: "FETCH_USER_DATA_FAILURE",
     removeUserReducerData: "REMOVE_USERREDUCER_DATA",
     saveCurrentNoteboookData: "SAVE_CURRENT_NOTEBOOK_DATA",
+
+
+    // Notebook related Actions
     writeDataToNotebook: "WRITE_DATA_TO_NOTEBOOK",
     insertDataToNotebookReducer: "INSERT_NOTEBOOKDATA_TO_NOTEBOOK_REDUCER",
     deleteLastDataFromNotebookReducer: "DELETE_NOTEBOOKDATA_FROM_NOTEBOOK_REDUCER",
@@ -24,7 +29,7 @@ export const ActionTypes = {
 
 
 
-
+    // Class Related Actions
     createClassFetchRequest: "CREATE_CLASS_FETCH_REQUEST",
     createClassFetchSuccess: "CREATE_CLASS_FETCH_SUCCESS",
     createClassFetchError: "CREATE_CLASS_FETCH_ERROR",
@@ -35,8 +40,14 @@ export const ActionTypes = {
 
 
 
+    // Quiz Related Actions
+    fetchRequestBeginAllAvailableQuiz: "FETCH_REQUEST_BEGIN_ALL_AVAILABLE_QUIZ",
+    fetchRequestAllAvailableQuiz: "FETCH_REQUEST_ALL_AVAILABLE_QUIZ",
+    fetchErrorRequestAllAvailableQuiz: "FETCH_ERROR_REQUEST_ALL_AVAILABLE_QUIZ",
+    fetchRequestSuccessAllAvailableQuiz: "FETCH_REQUEST_SUCCESS_ALL_AVAILABLE_QUIZ",
 
 
+    // Canvas Related Actions
     changeCanvasBrushColor: "SET_BRUSH_COLOR",
     changeCanvasBrushSize: "SET_BRUSH_SIZE",
     changeCanvasMaxBoundryHeight: "CHANGE_CANVAS_MAX_BOUNDRY_HEIGHT",

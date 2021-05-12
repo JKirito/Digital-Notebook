@@ -343,8 +343,22 @@ export const action_addRealTimeListener = () => {
                                     payload: myEnrolledClassList,
                                 })
                             })
+                            db.collection(FirebaseCollections.class).doc(el.id).collection('quiz').onSnapshot(querySnapshot => {
+                                // console.log('Some Update happened in quiz collection')
+                                let quizlist = [];
+                                querySnapshot.docs.map(doc => {
+                                    quizlist.push({
+                                        id: doc.id,
+                                        quizdata: doc.data(),
+                                    })
+                                })
+                                // console.dir(quizlist)
+                                dispatch({
+                                    type: ActionTypes.fetchRequestAllAvailableQuiz,
+                                    payload: quizlist,
+                                })
+                            })
                         })
-
                     })
                 }
                 // dispatch({

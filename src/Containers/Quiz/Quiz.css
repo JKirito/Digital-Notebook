@@ -1,0 +1,113 @@
+.quiz__container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+}
+.quiz__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+.quiz__questions__container {
+  width: 100%;
+  background-color: rgb(70, 69, 69);
+  margin-top: 30px;
+}
+.quiz__question {
+  margin: 1rem 0;
+  margin-left: 1rem;
+  color: white;
+}
+.quiz__options > ul {
+  list-style-type: none;
+  margin-left: 1rem;
+  color: white;
+}
+.quiz__options > ul > li {
+  padding: 1rem 0;
+}
+.quiz__footer {
+  /* display: fl; */
+  margin: 0 auto;
+  margin-top: 30px;
+}
+#quizsubmitbutton {
+  border: none;
+  color: white;
+  padding: 1rem 3rem;
+  background-color: rgb(59, 59, 59);
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+}
+#quizsubmitbutton:hover {
+  background-color: rgb(34, 34, 34);
+}
+.quiz__options__container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.quiz__options__container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+.quiz__options__container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.quiz__options__container input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.quiz__options__container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.quiz__options__container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.quizlayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.quizlayout__left {
+  margin: 0 auto;
+}

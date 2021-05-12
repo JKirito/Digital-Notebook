@@ -27,8 +27,8 @@ const NavBar = () => {
     const goToAttendance = () => {
         history.push('/attendance');
     }
-    const goToExam = () => {
-        history.push('/exam');
+    const goToQuiz = () => {
+        history.push('/quiz');
     }
     return (
         <nav className="home_navbar">
@@ -47,7 +47,7 @@ const NavBar = () => {
                         <ul>
                             <li className='ml_20' onClick={goToHome}>Home</li>
                             <li className='ml_20' onClick={goToAttendance}>Attendance</li>
-                            <li className='ml_20' onClick={goToExam}>Exam</li>
+                            {/* <li className='ml_20' onClick={goToQuiz}>Quiz</li> */}
                             <li className='ml_20' onClick={handlelogout}>Logout</li>
                         </ul>
                     </div>
