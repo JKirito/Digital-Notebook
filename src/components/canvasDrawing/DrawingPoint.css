@@ -182,3 +182,54 @@ input[type="color"]::-moz-color-swatch {
   left: 0;
   top: 0;
 }
+
+#drawbutton:hover:after  {
+  content: "Brush";
+  display: block;
+  position: relative;
+  width: 6.25rem;
+  height: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#eraserbutton:hover:after  {
+  content: "Eraser";
+  display: block;
+  position: relative;
+  width: 6.25rem;
+  height: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#add:hover:after  {
+  content: "Undo";
+  display: block;
+  position: relative;
+  width: 2.5rem;
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#savebutton:hover:after  {
+  content: "Save";
+  display: block;
+  position: relative;
+  width: 6.25rem;
+  height: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#clearbutton:hover:after{ 
+  content: "Delete";
+  display: block;
+  position: relative;
+  width: 6.25rem;
+  height: 1rem;
+  font-weight: bold;
+  text-align: center;
+} 
