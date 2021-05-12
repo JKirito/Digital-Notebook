@@ -432,6 +432,40 @@ export const action_AllowUserAccessToClass = ({ classname, user, data }) => {
     }
 }
 
+export const action_SetCurrentQuiz = (currentdata) => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.setCurrentQuiz,
+            payload: currentdata,
+        })
+    };
+}
+
+export const action_PostQuiz = ({ classname, quizdata, quizname }) => {
+    return async (dispatch, getState) => {
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
+            questionlist: quizdata,
+            quizname: quizname,
+            studentAnswers: [],
+        }, { merge: true })
+    }
+}
+
+export const action_SubmitQuiz = ({ classname, answers, quizname }) => {
+    return async (dispatch, getState) => {
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).get().then(querySnapshot => {
+            let prevStudentAnswers = querySnapshot.data().studentAnswers;
+            console.log(prevStudentAnswers)
+            db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
+                studentAnswers: [...prevStudentAnswers, {
+                    id: auth.currentUser.uid,
+                    answers: [...answers],
+                }],
+            }, { merge: true });
+        })
+
+    }
+}
 // export const action_
 
 

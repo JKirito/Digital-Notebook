@@ -38,6 +38,11 @@ const QuizReducer = (state = initialState, action) => {
                 ...state,
                 quizAvailable: [...action.payload],
             };
+        case ActionTypes.setCurrentQuiz:
+            return {
+                ...state,
+                currentQuiz: action.payload,
+            };
         default: {
             return {
                 ...state,

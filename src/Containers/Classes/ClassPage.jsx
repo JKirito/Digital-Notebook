@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router'
-import { action_RejectUserAccessToClass, action_AllowUserAccessToClass } from '../Application/actions';
+import { action_RejectUserAccessToClass, action_AllowUserAccessToClass, action_SetCurrentQuiz } from '../Application/actions';
 import { auth } from '../Application/firebase';
 import NavBar from '../Home/NavBar';
 import "./ClassPage.css"
@@ -29,13 +29,13 @@ function ClassPage() {
             {JSON.stringify(isHost)} */}
             <div className='classpageamargintop'>
                 <div>Welcome to class {classname}</div>
-                {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} filteredData={filteredData} /> : <JoinDisplayUI quizList={quizList} />}
+                {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} quizList={quizList} filteredData={filteredData} /> : <JoinDisplayUI quizList={quizList} classname={classname} />}
             </div>
         </div>
     )
 }
 
-const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
+const HostDisplayUI = ({ myclasses, classname, filteredData, quizList }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const rejectUserAccessToClass = (el) => {
@@ -64,7 +64,7 @@ const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
             <div>Assignments</div>
             <div>Attendance</div>
             <div>
-                <div>Hosted Quiz List</div>
+                <div>Hosted Quiz List Will be shown Here</div>
                 <button className='list__quiz__takebutton' onClick={createQuiz}>Create Quiz</button>
             </div>
             <div className='classpage__waitinglist'>
@@ -89,13 +89,18 @@ const HostDisplayUI = ({ myclasses, classname, filteredData }) => {
     );
 };
 
-const JoinDisplayUI = ({ quizList }) => {
+const JoinDisplayUI = ({ quizList, classname }) => {
     const history = useHistory();
+    const dispatch = useDispatch();
     useEffect(() => {
-        console.log(quizList);
+        // console.log(quizList);
     }, [quizList])
     const takeQuiz = (quizname) => {
-        history.push(`/class/quiz/${quizname}`);
+        let newArray = quizList.filter(x => x.id === quizname);
+        // let index = quizList.findIndex(x => x.id === quizname);
+        // console.log(newArray);
+        dispatch(action_SetCurrentQuiz(newArray[0]));
+        history.push(`/class/${classname}/quiz/${quizname}`);
     }
     return (
         <div>

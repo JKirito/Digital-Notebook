@@ -37,7 +37,7 @@ const App = () => {
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
                 <Route path='/quiz' component={Quiz} />
-                <Route path='/class/quiz/:quizname' component={Quiz} />
+                <Route exact path='/class/:classname/quiz/:quizname' component={Quiz} />
                 <Route path='/class/createquiz/:classname' component={CreateQuiz} />
                 <Route exact path='/class' component={GroupHome} />
                 <Route exact path='/class/:classname' component={ClassPage} />

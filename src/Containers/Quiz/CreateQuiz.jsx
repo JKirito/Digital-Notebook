@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
+import { action_PostQuiz } from '../Application/actions';
 
 function CreateQuiz() {
+    const { classname } = useParams();
     const quiznameRef = useRef();
     const questionFieldRef = useRef();
     const questionFieldOption1Ref = useRef();
@@ -9,6 +13,7 @@ function CreateQuiz() {
     const questionFieldOption4Ref = useRef();
     const questionAnswerFeildRef = useRef();
     const [quizData, setQuizData] = useState([]);
+    const dispatch = useDispatch();
     // const quizData = [];
     const AddDataToQuiz = () => {
         if (questionFieldRef.current.value && questionFieldOption1Ref.current.value && questionFieldOption2Ref.current.value && questionFieldOption3Ref.current.value && questionFieldOption4Ref.current.value && questionAnswerFeildRef.current.value) {
@@ -28,8 +33,14 @@ function CreateQuiz() {
             questionFieldOption4Ref.current.value = '';
             questionAnswerFeildRef.current.value = '';
         } else {
-            console.log('Invalid data')
+            // console.log('Invalid data')
+            alert(`FIll All the data Properly`);
         }
+    }
+
+    const PostQuiz = () => {
+        dispatch(action_PostQuiz({ classname: classname, quizname: quiznameRef.current.value, quizdata: quizData }));
+        // console.log(quizData)
     }
     return (
         <div>
@@ -72,7 +83,7 @@ function CreateQuiz() {
                 </div>
             </div>
             <div>
-                <button className='list__quiz__takebutton' style={{ background: '#215ac1', margin: '0 auto' }} onClick={() => { alert('Still Being Developed') }}>Post Quiz</button>
+                <button className='list__quiz__takebutton' style={{ background: '#215ac1', margin: '0 auto' }} onClick={PostQuiz}>Post Quiz</button>
             </div>
         </div>
     )

@@ -45,6 +45,7 @@ export const ActionTypes = {
     fetchRequestAllAvailableQuiz: "FETCH_REQUEST_ALL_AVAILABLE_QUIZ",
     fetchErrorRequestAllAvailableQuiz: "FETCH_ERROR_REQUEST_ALL_AVAILABLE_QUIZ",
     fetchRequestSuccessAllAvailableQuiz: "FETCH_REQUEST_SUCCESS_ALL_AVAILABLE_QUIZ",
+    setCurrentQuiz: "SET_CURRENT_QUIZ",
 
 
     // Canvas Related Actions
@@ -67,4 +68,5 @@ export const FirebaseCollections = {
     users: 'users',
     notebooks: 'notebooks',
     class: 'class',
+    quiz: 'quiz',
 }
