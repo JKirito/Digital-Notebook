@@ -39,7 +39,17 @@ function CreateQuiz() {
     }
 
     const PostQuiz = () => {
-        dispatch(action_PostQuiz({ classname: classname, quizname: quiznameRef.current.value, quizdata: quizData }));
+        if (quizData.length === 0) {
+            alert('Quiz Should Have at least 1 Question.')
+        } else {
+            if (quiznameRef.current.value === '') {
+                quiznameRef.current.focus();
+                alert('Please Enter a Quiz Name')
+            }
+            else {
+                dispatch(action_PostQuiz({ classname: classname, quizname: quiznameRef.current.value, quizdata: quizData }));
+            }
+        }
         // console.log(quizData)
     }
     return (
@@ -89,9 +99,9 @@ function CreateQuiz() {
     )
 }
 const QuizPreviewPanel = ({ quizData, setQuizData }) => {
-    useEffect(() => {
-        // console.dir(quizData);
-    })
+    // useEffect(() => {
+    //     // console.dir(quizData);
+    // })
     const removeThisQuestion = (question) => {
         let newArray = quizData;
         let index = newArray.indexOf(x => x.question === question);

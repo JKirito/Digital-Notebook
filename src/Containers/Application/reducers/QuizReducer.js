@@ -5,6 +5,7 @@ import {
 const initialState = {
     quizAvailable: [],
     currentQuiz: {},
+    hostedQuiz: [],
     isLoading: false,
     error: null,
     success: false,
@@ -42,6 +43,11 @@ const QuizReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentQuiz: action.payload,
+            };
+        case ActionTypes.setHostedQuiz:
+            return {
+                ...state,
+                hostedQuiz: [...action.payload],
             };
         default: {
             return {

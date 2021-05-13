@@ -9,11 +9,11 @@ function Quiz() {
     let quizid = useSelector(state => state.QuizReducer.currentQuiz.id);
     const dispatch = useDispatch();
     let { quizname, classname } = useParams();
-    let questionno = 2;
-    let questionText = 'Lorem ipsum asndlaksndlnas asjbdak dasld asld  sla d';
     const [filteredData, setFilteredData] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [answers, setAnswers] = useState([]);
+    const [answers, setAnswers] = useState({
+        answers: [],
+    });
     let questionList = [];
     // let answers = [];
     useEffect(() => {
@@ -21,24 +21,9 @@ function Quiz() {
     })
     const increaseCurrentIndex = () => {
         let length = quiz.questionlist.length;
-        if (currentIndex >= length) {
+        if (currentIndex >= length - 1) {
             return;
         } else {
-            let getSelectedValue = document.querySelector('input[name="radio"]:checked')
-            if (getSelectedValue) {
-                if (answers.some(x => x.question === currentIndex)) {
-                    answers[currentIndex] = {
-                        question: currentIndex,
-                        answer: getSelectedValue.value,
-                    }
-                } else {
-                    setAnswers([...answers, {
-                        question: currentIndex,
-                        answer: getSelectedValue.value,
-                    }]);
-                }
-            }
-            console.log(answers);
             var ele = document.getElementsByName("radio");
             for (var i = 0; i < ele.length; i++)
                 ele[i].checked = false;
@@ -50,18 +35,78 @@ function Quiz() {
         if (currentIndex <= 0) {
             return;
         } else {
+            var ele = document.getElementsByName("radio");
+            for (var i = 0; i < ele.length; i++)
+                ele[i].checked = false;
             setCurrentIndex(currentIndex - 1)
         }
     }
+    const updateAnswers = () => {
+        let getSelectedValue = document.querySelector('input[name="radio"]:checked')
+        if (getSelectedValue) {
+            if (answers.answers.some(x => x.question === currentIndex)) {
+                console.log('already present Updating it')
+                let tempanswers = answers.answers;
+                tempanswers[currentIndex] = {
+                    question: currentIndex,
+                    answer: getSelectedValue.value,
+                }
+                setAnswers({
+                    answers: tempanswers,
+                });
+                // console.log(answers);
+            } else {
+                console.log('not present adding it')
+                // setAnswers([...answers, {
+                //     question: currentIndex,
+                //     answer: getSelectedValue.value,
+                // }]);
+                setAnswers({
+                    answers: [...answers.answers, {
+                        question: currentIndex,
+                        answer: getSelectedValue.value,
+                    }]
+                })
+                // console.log(answers);
+            }
+        }
+    }
     const submitQuiz = () => {
-        dispatch(action_SubmitQuiz({ classname: classname, answers: answers, quizname: quizid }));
-        alert('Submission Successful');
+        let length = quiz.questionlist.length;
+        let total = quiz.questionlist.length;
+        let correct = 0;
+        console.log(quiz)
+        console.log(answers.answers)
+        answers.answers.map(el => {
+            let correctoption = quiz.questionlist[el.question].correctoption;
+            let correctAnswer = quiz.questionlist[el.question].options[correctoption - 1];
+            console.log(el.answer, correctAnswer)
+            if (el.answer === correctAnswer) {
+                console.log('Answer is Correct')
+                correct++;
+            } else {
+                console.log('Wrong Answer')
+            }
+            // console.log(el.question,el.answer)
+        })
+
+        console.log(`Correct Answers :- ${correct}/${total}`)
+        if (answers.answers.length !== length) {
+            console.log(`comparing ${answers.length} with ${length - 1}`)
+            alert('Fill The rest of the Quiz before Submission')
+        }
+        else {
+            dispatch(action_SubmitQuiz({ classname: classname, answers: answers.answers, quizname: quizid, correct: correct, total: total }));
+        }
     }
     return (
         <div className='quiz__container'>
             <div className='quiz__header'>
                 <p>Quiz:- {quizid}</p>
-                <p>Time:- 30 min</p>
+                <div>
+                    <p>Time:- 30 min</p>
+                    <p>Total Questions:- {quiz?.questionlist?.length}</p>
+                </div>
             </div>
             <div className='quiz__questions__container'>
                 {
@@ -75,36 +120,12 @@ function Quiz() {
                                     quiz.questionlist[currentIndex].options.map((el, index) => (
                                         <li key={index}>
                                             <label className="quiz__options__container" >{el}
-                                                <input type="radio" name="radio" value={el} />
+                                                <input type="radio" name="radio" value={el} onChange={updateAnswers} />
                                                 <span className="checkmark"></span>
                                             </label>
                                         </li>
                                     ))
                                 }
-                                {/* <li>
-                            <label className="quiz__options__container" >One
-                                <input type="radio" name="radio" />
-                                <span className="checkmark"></span>
-                            </label>
-                        </li>
-                        <li>
-                            <label className="quiz__options__container" >Two
-                                <input type="radio" name="radio" />
-                                <span className="checkmark"></span>
-                            </label>
-                        </li>
-                        <li>
-                            <label className="quiz__options__container" >Three
-                                <input type="radio" name="radio" />
-                                <span className="checkmark"></span>
-                            </label>
-                        </li>
-                        <li>
-                            <label className="quiz__options__container" >Four
-                                <input type="radio" name="radio" />
-                                <span className="checkmark"></span>
-                            </label>
-                        </li> */}
                             </ul>
                         </div>
                     </div>

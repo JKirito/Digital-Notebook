@@ -111,3 +111,23 @@
 .quizlayout__left {
   margin: 0 auto;
 }
+.hosted__quiz__control__studentList {
+  background-color: rgb(59, 59, 59);
+  width: 400px;
+  max-width: 90%;
+  border-radius: 4px;
+  color: white;
+  user-select: none;
+  margin: 0.25rem 0;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+}
+.hosted__quiz__control__studentList__email {
+  padding: 0.5rem 1em;
+}
+.hosted__quiz__control__studentList__container {
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(175, 175, 175);
+}

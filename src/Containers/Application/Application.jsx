@@ -12,6 +12,7 @@ import GroupHome from '../GroupHome/GroupHome.jsx';
 import ClassPage from '../Classes/ClassPage.jsx';
 import Quiz from '../Quiz/Quiz.jsx';
 import CreateQuiz from '../Quiz/CreateQuiz.jsx';
+import HostedQuizControl from '../Quiz/HostedQuizControl.jsx';
 
 function Application() {
     return (
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path='/login' component={Login} />
                 <Route path='/quiz' component={Quiz} />
                 <Route exact path='/class/:classname/quiz/:quizname' component={Quiz} />
+                <Route exact path='/class/:classname/control/:quizname' component={HostedQuizControl} />
                 <Route path='/class/createquiz/:classname' component={CreateQuiz} />
                 <Route exact path='/class' component={GroupHome} />
                 <Route exact path='/class/:classname' component={ClassPage} />

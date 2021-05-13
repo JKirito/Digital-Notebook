@@ -63,8 +63,11 @@ const HostDisplayUI = ({ myclasses, classname, filteredData, quizList }) => {
             <h3>Only Visible To Host</h3>
             <div>Assignments</div>
             <div>Attendance</div>
+            <div>Hosted Quiz List Will be shown Here</div>
             <div>
-                <div>Hosted Quiz List Will be shown Here</div>
+                <HostedQuizzesList classname={classname} />
+            </div>
+            <div>
                 <button className='list__quiz__takebutton' onClick={createQuiz}>Create Quiz</button>
             </div>
             <div className='classpage__waitinglist'>
@@ -123,5 +126,26 @@ const JoinDisplayUI = ({ quizList, classname }) => {
     );
 };
 
+const HostedQuizzesList = ({ classname }) => {
+    let hostedquizlist = useSelector(state => state.QuizReducer.hostedQuiz);
+    const history = useHistory();
+    const SeeHostedQuiz = (quizname) => {
+        history.push(`/class/${classname}/control/${quizname}`);
+    };
+    return (
+        <>
+            <div className='list__quiz__container'>
+                {
+                    hostedquizlist && hostedquizlist.map(el => (
+                        <div className='list__quiz__item' key={el.quizdata.quizname}>
+                            <p className='list__quiz__name'>{el.quizdata.quizname}</p>
+                            <button className='list__quiz__takebutton' onClick={() => { SeeHostedQuiz(el.quizdata.quizname) }}>Show Details</button>
+                        </div>
+                    ))
+                }
+            </div>
+        </>
+    );
+}
 
 export default ClassPage

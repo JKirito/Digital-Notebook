@@ -294,6 +294,7 @@ export const action_addRealTimeListener = () => {
             let documentList = [];
             let myClassList = [];
             let myEnrolledClassList = [];
+            let quizlist = [];
             const classCollection = db.collection(FirebaseCollections.class).onSnapshot(classSnapshot => {
                 const documents = db.collection(FirebaseCollections.class).where('id', '==', `${auth.currentUser.uid}`).get();
                 if (!documents.empty) {
@@ -317,6 +318,36 @@ export const action_addRealTimeListener = () => {
                                     type: ActionTypes.setMyClasses,
                                     payload: myClassList,
                                 })
+                            })
+
+                            // Triggering Update Will cause data to be written twice in the quizlist :ERROR XXXXXXX
+                            db.collection(FirebaseCollections.class).doc(el.id).collection(FirebaseCollections.quiz).onSnapshot(querySnapshot => {
+                                console.log('Some Update happened in quiz collection')
+                                querySnapshot.docs.map(doc => {
+                                    let index = quizlist.findIndex(x => x.id === doc.id);
+                                    // console.dir(`Index of doc id :- ${index}`)
+                                    // console.dir(`Comparing ${doc.id} with ${quizlist[0]?.id}`)
+                                    if (index !== -1) {
+                                        // console.log("Updating")
+                                        quizlist[index] = {
+                                            id: doc.id,
+                                            quizdata: doc.data(),
+                                        }
+                                    }
+                                    else {
+                                        // console.log("Pushing")
+                                        quizlist.push({
+                                            id: doc.id,
+                                            quizdata: doc.data(),
+                                        })
+                                    }
+                                })
+                                // console.dir(quizlist)
+                                dispatch({
+                                    type: ActionTypes.setHostedQuiz,
+                                    payload: quizlist,
+                                })
+                                // quizlist = [];
                             })
                         })
                     })
@@ -343,7 +374,7 @@ export const action_addRealTimeListener = () => {
                                     payload: myEnrolledClassList,
                                 })
                             })
-                            db.collection(FirebaseCollections.class).doc(el.id).collection('quiz').onSnapshot(querySnapshot => {
+                            db.collection(FirebaseCollections.class).doc(el.id).collection(FirebaseCollections.quiz).onSnapshot(querySnapshot => {
                                 // console.log('Some Update happened in quiz collection')
                                 let quizlist = [];
                                 querySnapshot.docs.map(doc => {
@@ -368,7 +399,6 @@ export const action_addRealTimeListener = () => {
             }, (error) => {
                 console.log(error);
             });
-
         }
     }
 }
@@ -443,25 +473,48 @@ export const action_SetCurrentQuiz = (currentdata) => {
 
 export const action_PostQuiz = ({ classname, quizdata, quizname }) => {
     return async (dispatch, getState) => {
-        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
-            questionlist: quizdata,
-            quizname: quizname,
-            studentAnswers: [],
-        }, { merge: true })
+        let present = false;
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).get().then(querySnapshot => {
+            querySnapshot.docs.map(doc => {
+                if (doc.id === quizname) {
+                    present = true;
+                }
+            })
+            if (present) {
+                alert('Quiz With Same Name Already Exists, Choose a different Name');
+            } else {
+                db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
+                    questionlist: quizdata,
+                    quizname: quizname,
+                    studentAnswers: [],
+                }, { merge: true })
+                alert('Quiz Posted Sucessfully');
+            }
+        })
     }
 }
 
-export const action_SubmitQuiz = ({ classname, answers, quizname }) => {
+export const action_SubmitQuiz = ({ classname, answers, quizname, correct, total }) => {
     return async (dispatch, getState) => {
         db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).get().then(querySnapshot => {
             let prevStudentAnswers = querySnapshot.data().studentAnswers;
+            let present = prevStudentAnswers?.findIndex(x => x.id === auth.currentUser.uid);
             console.log(prevStudentAnswers)
-            db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
-                studentAnswers: [...prevStudentAnswers, {
-                    id: auth.currentUser.uid,
-                    answers: [...answers],
-                }],
-            }, { merge: true });
+            if (present !== -1) {
+                alert('Already Submitted Once Cant be Done Again');
+            }
+            else {
+                db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.quiz).doc(quizname).set({
+                    studentAnswers: [...prevStudentAnswers, {
+                        id: auth.currentUser.uid,
+                        email: auth.currentUser.email,
+                        answers: [...answers],
+                        correct: correct,
+                        total: total,
+                    }],
+                }, { merge: true });
+                alert('Submission Successful');
+            }
         })
 
     }

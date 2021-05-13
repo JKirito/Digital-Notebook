@@ -46,6 +46,7 @@ export const ActionTypes = {
     fetchErrorRequestAllAvailableQuiz: "FETCH_ERROR_REQUEST_ALL_AVAILABLE_QUIZ",
     fetchRequestSuccessAllAvailableQuiz: "FETCH_REQUEST_SUCCESS_ALL_AVAILABLE_QUIZ",
     setCurrentQuiz: "SET_CURRENT_QUIZ",
+    setHostedQuiz: "FETCH_HOSTED_QUIZES",
 
 
     // Canvas Related Actions
