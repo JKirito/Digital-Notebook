@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,28 +76,25 @@ function Signup() {
             <div className="container" >
                 <h1>Sign Up</h1>
                 <div className="inputcontainer">
-                    <label htmlFor="email" className="text">
-                        Display Name
-                    </label>
-                    <input type="text" id="displayname" ref={displaynameRef} />
+                    <form className='customTextField'>
+                        <TextField id="outlined-basic" label="Display Name" variant="outlined" fullWidth inputRef={displaynameRef} />
+                    </form>
                 </div>
                 <div className="inputcontainer">
-                    <label htmlFor="email" className="text">
-                        E-mail
-                    </label>
-                    <input type="email" id="email" ref={signupusernameRef} />
+                    <form className='customTextField'>
+                        <TextField id="outlined-basic" label="Username" variant="outlined" fullWidth inputRef={signupusernameRef} />
+                    </form>
                 </div>
                 <div className="inputcontainer">
-                    <label htmlFor="pass" className="text">
-                        Password
-                    </label>
-                    <input type="password" id="pass" ref={signuppasswordRef} />
+
+                    <form className='customTextField'>
+                        <TextField id="outlined-basic" label="Password" variant="outlined" type='password' fullWidth inputRef={signuppasswordRef} />
+                    </form>
                 </div>
                 <div className="inputcontainer">
-                    <label htmlFor="pass" className="text">
-                        Confirm password
-                    </label>
-                    <input type="password" id="cpass" ref={signuppasswordConfirmRef} />
+                    <form className='customTextField'>
+                        <TextField id="outlined-basic" label="Confirm Password" variant="outlined" type='password' fullWidth inputRef={signuppasswordConfirmRef} />
+                    </form>
                 </div>
                 {
                     error && <div className="inputcontainer">

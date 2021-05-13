@@ -1,7 +1,10 @@
+import { Button, Card, CardActions, CardContent, Grid, TextField, Typography } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { action_PostQuiz } from '../Application/actions';
+import NavBar from '../Home/NavBar';
 
 function CreateQuiz() {
     const { classname } = useParams();
@@ -54,48 +57,57 @@ function CreateQuiz() {
     }
     return (
         <div>
-            <div className='quizlayout'>
-                <div className='quizlayout__left'>
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                        <p>Quiz Name:-</p>
-                        <input type="text" ref={quiznameRef} placeholder='Enter Quiz Name Here' />
-                    </div>
+            <NavBar />
+            <Grid container justify='center' style={{ marginTop: '60px' }}>
+                <Grid item>
+                    <Typography variant='h4'>Quiz Setup</Typography>
+                </Grid>
+            </Grid>
+            <Grid container className='quizlayout' justify='center'>
+                <Grid item className='quizlayout__left' xs={12} md={6}>
+                    <Grid container justify='center'>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Quiz Name" variant="outlined" fullWidth inputRef={quiznameRef} />
+                        </form>
+                    </Grid>
+                    <Grid container direction='column' justify='center' alignItems='center'>
+                        <Typography variant='h7' style={{ color: '#777777' }}>Fill the details properly</Typography>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Enter Question Here" variant="outlined" fullWidth inputRef={questionFieldRef} />
+                        </form>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Option 1" variant="outlined" fullWidth inputRef={questionFieldOption1Ref} />
+                        </form>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Option 2" variant="outlined" fullWidth inputRef={questionFieldOption2Ref} />
+                        </form>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Option 3" variant="outlined" fullWidth inputRef={questionFieldOption3Ref} />
+                        </form>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Option 4" variant="outlined" fullWidth inputRef={questionFieldOption4Ref} />
+                        </form>
+                        <form noValidate autoComplete="off" className='customTextField'>
+                            <TextField id="outlined-basic" label="Correct Option Number" variant="outlined" fullWidth inputRef={questionAnswerFeildRef} />
+                        </form>
+                        <Grid container justify='center' style={{ marginTop: '20px' }}>
+                            <Button variant='contained' style={{ marginRight: '0', color: "white", background: "#0E897A" }} onClick={AddDataToQuiz}>Add</Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item justify='center' xs={10} md={5}>
+                    <Grid container justify='center'>
+                        <Typography variant='h6'>Quiz Preview</Typography>
+                    </Grid>
                     <div>
-                        <h3>Enter Question to add to Quiz</h3>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Question:- </p><input type="text" ref={questionFieldRef} placeholder='Enter Question Here' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Option 1:- </p><input type="text" ref={questionFieldOption1Ref} placeholder='Enter Option 1 Here' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Option 2:- </p><input type="text" ref={questionFieldOption2Ref} placeholder='Enter Option 2 Here' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Option 3:- </p><input type="text" ref={questionFieldOption3Ref} placeholder='Enter Option 3 Here' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Option 4:- </p><input type="text" ref={questionFieldOption4Ref} placeholder='Enter Option 4 Here' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>Answer:- </p><input type="text" ref={questionAnswerFeildRef} placeholder='Which Option is Correct?' />
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: 'center' }}>
-                            <button className='list__quiz__takebutton' style={{ marginRight: '0' }} onClick={AddDataToQuiz}>Add</button>
-                        </div>
-                    </div>
-                </div>
-                <div className='quizlayout__right'>
-                    <h3>Quiz Preview Will Show Here</h3>
-                    <div className='preview__container'>
                         <QuizPreviewPanel quizData={quizData} setQuizData={setQuizData} />
                     </div>
-                </div>
-            </div>
-            <div>
-                <button className='list__quiz__takebutton' style={{ background: '#215ac1', margin: '0 auto' }} onClick={PostQuiz}>Post Quiz</button>
-            </div>
-        </div>
+                </Grid>
+            </Grid>
+            <Grid container justify='center' style={{ marginTop: '20px' }}>
+                <Button variant='contained' color='primary' onClick={PostQuiz}>Post Quiz</Button>
+            </Grid>
+        </div >
     )
 }
 const QuizPreviewPanel = ({ quizData, setQuizData }) => {
@@ -113,17 +125,21 @@ const QuizPreviewPanel = ({ quizData, setQuizData }) => {
         <>
             {
                 quizData && quizData.map(question => (
-                    <div key={question.question} className='preview__card'>
-                        <p>Question :- {question.question}</p>
-                        <p>Options</p>
-                        {
-                            question.options.map((option, index) => {
-                                return <p key={index}>{index + 1} ) {option}</p>
-                            })
-                        }
-                        <p>Correct Answer:- {question.correctoption}</p>
-                        <button onClick={() => { removeThisQuestion(question.question) }}>Remove this Question</button>
-                    </div>
+                    <Card key={question.question} className='preview__card'>
+                        <CardContent>
+                            <p>Question :- {question.question}</p>
+                            <p>Options</p>
+                            {
+                                question.options.map((option, index) => {
+                                    return <p key={index}>{index + 1} ) {option}</p>
+                                })
+                            }
+                            <p>Correct Answer:- {question.correctoption}</p>
+                        </CardContent>
+                        <CardActions>
+                            <Button variant='contained' style={{ background: '#FE3B2F', color: 'white' }} startIcon={<DeleteIcon />} onClick={() => { removeThisQuestion(question.question) }}>Delete</Button>
+                        </CardActions>
+                    </Card>
                 ))
             }
         </>

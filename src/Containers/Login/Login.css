@@ -53,7 +53,7 @@
 }
 input[type="text"],
 input[type="password"] {
-  position: relative;
+  /* position: relative;
   width: 20.375rem;
   outline: none;
   background: #f0f7fb;
@@ -66,6 +66,21 @@ input[type="password"] {
   font-size: 1.2rem;
   line-height: 19px;
   padding: 0 0.5rem;
+  color: var(--darkBlue); */
+}
+
+.customTextField {
+  position: relative;
+  width: 20.375rem;
+  /* outline: none;
+  background: #f0f7fb;
+  border: 1px solid #bbc8ce; */
+  height: 2.874rem;
+  margin: 10px 0;
+  /* border-radius: 6px; */
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 19px;
   color: var(--darkBlue);
 }
 

@@ -1,3 +1,6 @@
+import { Button, Card, CardActions, CardContent, Fab, Grid, Paper, Typography } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router'
@@ -27,9 +30,11 @@ function ClassPage() {
             {/* <h1>Welcome to Class {classname} </h1>
             {JSON.stringify(myClasses)}
             {JSON.stringify(isHost)} */}
-            <div className='classpageamargintop'>
-                <div>Welcome to class {classname}</div>
-                {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} quizList={quizList} filteredData={filteredData} /> : <JoinDisplayUI quizList={quizList} classname={classname} />}
+            <div style={{ width: '90%', margin: '0 auto', }}>
+                <div className='classpageamargintop'>
+                    <Typography variant='h4'>Welcome to {classname} class</Typography>
+                    {isHost ? <HostDisplayUI myclasses={myclasses} classname={classname} quizList={quizList} filteredData={filteredData} /> : <JoinDisplayUI quizList={quizList} classname={classname} />}
+                </div>
             </div>
         </div>
     )
@@ -60,33 +65,52 @@ const HostDisplayUI = ({ myclasses, classname, filteredData, quizList }) => {
     }
     return (
         <div>
-            <h3>Only Visible To Host</h3>
+            {/* <h3>Only Visible To Host</h3>
             <div>Assignments</div>
-            <div>Attendance</div>
-            <div>Hosted Quiz List Will be shown Here</div>
+            <div>Attendance</div> */}
+            <Grid container justify='space-between' alignItems='center' style={{ marginTop: '10px' }}>
+                <Grid item>
+                    <Typography variant='h5'>Hosted Quizes</Typography>
+                </Grid>
+                <Grid item>
+                    <Button variant='contained' style={{ background: '#57C245', color: 'white', fontWeight: 'bold' }} onClick={createQuiz}>Create Quiz</Button>
+                </Grid>
+            </Grid>
             <div>
                 <HostedQuizzesList classname={classname} />
             </div>
-            <div>
-                <button className='list__quiz__takebutton' onClick={createQuiz}>Create Quiz</button>
-            </div>
-            <div className='classpage__waitinglist'>
-                <p className='heading'>Waiting List</p>
-                <div>
+            <div style={{ marginTop: '20px' }}>
+                <Typography variant='h5' className='heading'>Waiting Room</Typography>
+                <Grid container spacing={2}>
                     {
                         myclasses && filteredData && filteredData[0].waitinglist.map(el => (
-                            <div key={el.email} className='classpage__waitinglist__user'>
-                                <div >
-                                    <p >{el.email}</p>
-                                </div>
-                                <div className='classpage__waitinglist__buttons'>
-                                    <button><i className='fas fa-check' onClick={() => { allowUserAccessToClass(el) }}></i></button>
-                                    <button> <i className='fas fa-times' onClick={() => { rejectUserAccessToClass(el) }}></i> </button>
-                                </div>
-                            </div>
+                            <Paper key={el.email} elevation={4} style={{ width: '100%', padding: '0.5rem 0', marginTop: '6px' }}>
+                                <Grid container justify='space-between' alignItems='center' style={{ marginLeft: '8px', marginTop: '4px' }}>
+                                    <Grid item>
+                                        <Typography variant='h6' >{el.email}</Typography>
+                                    </Grid>
+                                    <Grid item >
+                                        {/* <button><i className='fas fa-check' onClick={() => { allowUserAccessToClass(el) }}></i></button> */}
+                                        <Fab aria-label='accept' style={{ margin: '0 5px', background: '#33D74C', color: 'white' }} onClick={() => { allowUserAccessToClass(el) }}>
+                                            <CheckIcon />
+                                        </Fab>
+                                        <Fab aria-label='reject' style={{ marginLeft: '5px', marginRight: '12px', background: "#FE3B2F", color: "white" }} onClick={() => { rejectUserAccessToClass(el) }}>
+                                            <CloseIcon />
+                                        </Fab>
+                                        {/* <button> <i className='fas fa-times' onClick={() => { rejectUserAccessToClass(el) }}></i> </button> */}
+                                    </Grid>
+                                </Grid>
+                            </Paper>
                         ))
                     }
-                </div>
+                    {
+                        myclasses && filteredData[0].waitinglist.length === 0 && <Grid container justify='center' style={{ marginTop: '10px', color: '#747474' }}>
+                            <Grid item>
+                                <Typography variant='h6'>The Waiting Room is Empty</Typography>
+                            </Grid>
+                        </Grid>
+                    }
+                </Grid>
             </div>
         </div>
     );
@@ -107,21 +131,26 @@ const JoinDisplayUI = ({ quizList, classname }) => {
     }
     return (
         <div>
-            <div>
-                <div>
-                    Only Visible to Joined Users
-                </div>
-                <div className='list__quiz__container'>
-                    {
-                        quizList && quizList.map(el => (
-                            <div className='list__quiz__item' key={el.quizdata.quizname}>
-                                <p className='list__quiz__name'>{el.quizdata.quizname}</p>
-                                <button className='list__quiz__takebutton' onClick={() => { takeQuiz(el.quizdata.quizname) }}>Start Quiz</button>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
+            <Grid container spacing={3} style={{ marginTop: '10px' }}>
+                {
+                    quizList && quizList.map(el => (
+                        <Grid item xs={12} md={6} lg={3} xl={2} className='list__quiz__item' key={el.quizdata.quizname}>
+                            <Card variant='outlined'>
+                                <CardContent>
+                                    <Typography variant='h6'>{el.quizdata.quizname}</Typography>
+                                    <Typography variant='subtitle2'>Quiz Description</Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button variant='contained' color='primary' onClick={() => { takeQuiz(el.quizdata.quizname) }}>Start Quiz</Button>
+                                </CardActions>
+                            </Card>
+
+                            {/* <Typography variant='h6' className='list__quiz__name'>{el.quizdata.quizname}</Typography>
+                            <Button variant='contained' color='primary' className='list__quiz__takebutton' onClick={() => { takeQuiz(el.quizdata.quizname) }}>Start Quiz</Button> */}
+                        </Grid>
+                    ))
+                }
+            </Grid>
         </div>
     );
 };
@@ -134,16 +163,29 @@ const HostedQuizzesList = ({ classname }) => {
     };
     return (
         <>
-            <div className='list__quiz__container'>
+            <Grid container spacing={3} style={{ marginTop: '10px' }}>
                 {
                     hostedquizlist && hostedquizlist.map(el => (
-                        <div className='list__quiz__item' key={el.quizdata.quizname}>
-                            <p className='list__quiz__name'>{el.quizdata.quizname}</p>
-                            <button className='list__quiz__takebutton' onClick={() => { SeeHostedQuiz(el.quizdata.quizname) }}>Show Details</button>
-                        </div>
+                        <Grid item key={el.quizdata.quizname} xs={12} md={6} lg={3} xl={2}>
+                            <Card variant='outlined'>
+                                <CardContent>
+                                    <Typography variant='h5' className='list__quiz__name'>{el.quizdata.quizname}</Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button variant='contained' color='primary' onClick={() => { SeeHostedQuiz(el.quizdata.quizname) }}>Show Details</Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     ))
                 }
-            </div>
+                {
+                    hostedquizlist && hostedquizlist.length === 0 && <Grid container justify='center' style={{ marginTop: '10px', color: '#747474' }}>
+                        <Grid item>
+                            <Typography variant='h6'>No Quiz Is Hosted Yet.</Typography>
+                        </Grid>
+                    </Grid>
+                }
+            </Grid>
         </>
     );
 }

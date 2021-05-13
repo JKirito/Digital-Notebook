@@ -1,3 +1,4 @@
+import { TextField, Typography } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,22 +71,20 @@ function Login() {
             <div className="container">
                 <h1> LOGIN</h1>
                 <div className="inputcontainer">
-                    <label htmlFor="email" className="text">
-                        E-mail
-                </label>
-                    <input type="text" id="email" ref={usernameRef} />
+                    <form noValidate autoComplete="off" className='customTextField'>
+                        <TextField id="outlined-basic" label="Username" variant="outlined" fullWidth inputRef={usernameRef} />
+                    </form>
                 </div>
                 <div className="inputcontainer">
-                    <label htmlFor="email" className="text">
-                        Password
-                    </label>
-                    <input type="password" id="pass" ref={passwordRef} />
+                    <form noValidate autoComplete="off" className='customTextField'>
+                        <TextField id="outlined-basic" label="password" variant="outlined" type='password' fullWidth inputRef={passwordRef} />
+                    </form>
                 </div>
                 {
                     error && <div className="inputcontainer">
                         <div className="errorBox">
                             {/* <h3>The password that you've entered is incorrect. <Link to='/forgotpassword'><p>Forgot Password?</p></Link> </h3> */}
-                            <h3>{error?.message}</h3>
+                            <Typography variant='subtitle2' style={{ color: 'red' }}>{error?.message}</Typography>
                         </div>
                     </div>
                 }

@@ -65,7 +65,7 @@ function NotesHome() {
             <Modal showModal={showModal} setShowModal={setShowModal} g_user={g_user} />
             <NavBar />
             <div className='noteshomelayout'>
-                <GroupsContainer />
+                {/* <GroupsContainer /> */}
                 <FilesContainer />
                 <CreateDocumentButton setShowModal={setShowModal} />
             </div>

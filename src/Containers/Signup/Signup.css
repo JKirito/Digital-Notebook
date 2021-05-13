@@ -25,11 +25,11 @@
   line-height: 37px;
   color: var(--darkBlue);
 }
-
+/* 
 .inputcontainer {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .text {
   font-family: Roboto;
@@ -41,7 +41,7 @@
   padding-top: 0.78rem;
   padding-bottom: 0.78rem;
 }
-input[type="text"],
+/* input[type="text"],
 input[type="password"],
 input[type="email"] {
   width: 20.375rem;
@@ -57,7 +57,7 @@ input[type="email"] {
   line-height: 19px;
   padding: 0 0.5rem;
   color: var(--darkBlue);
-}
+} */
 
 .buttonlogin {
   width: 17.0625rem;

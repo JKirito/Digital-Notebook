@@ -9,17 +9,18 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  margin-top: 60px;
   border-bottom: 1px solid black;
 }
 .quiz__questions__container {
   width: 100%;
-  background-color: rgb(70, 69, 69);
+  /* background-color: rgb(70, 69, 69); */
   margin-top: 30px;
 }
 .quiz__question {
   margin: 1rem 0;
-  margin-left: 1rem;
-  color: white;
+  /* margin-left: 1rem; */
+  color: rgb(43, 43, 43);
 }
 .quiz__options > ul {
   list-style-type: none;

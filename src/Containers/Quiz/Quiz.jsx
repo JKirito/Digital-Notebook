@@ -1,7 +1,9 @@
+import { Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { action_SubmitQuiz } from '../Application/actions';
+import NavBar from '../Home/NavBar';
 import './Quiz.css';
 
 function Quiz() {
@@ -41,20 +43,21 @@ function Quiz() {
             setCurrentIndex(currentIndex - 1)
         }
     }
-    const updateAnswers = () => {
-        let getSelectedValue = document.querySelector('input[name="radio"]:checked')
+    const updateAnswers = (e) => {
+        // let getSelectedValue = document.querySelector('input[name="radio"]:checked')
+        let getSelectedValue = e.target.value;
         if (getSelectedValue) {
             if (answers.answers.some(x => x.question === currentIndex)) {
                 console.log('already present Updating it')
                 let tempanswers = answers.answers;
                 tempanswers[currentIndex] = {
                     question: currentIndex,
-                    answer: getSelectedValue.value,
+                    answer: getSelectedValue,
                 }
                 setAnswers({
                     answers: tempanswers,
                 });
-                // console.log(answers);
+                console.log(answers);
             } else {
                 console.log('not present adding it')
                 // setAnswers([...answers, {
@@ -64,10 +67,10 @@ function Quiz() {
                 setAnswers({
                     answers: [...answers.answers, {
                         question: currentIndex,
-                        answer: getSelectedValue.value,
+                        answer: getSelectedValue,
                     }]
                 })
-                // console.log(answers);
+                console.log(answers);
             }
         }
     }
@@ -75,24 +78,24 @@ function Quiz() {
         let length = quiz.questionlist.length;
         let total = quiz.questionlist.length;
         let correct = 0;
-        console.log(quiz)
-        console.log(answers.answers)
-        answers.answers.map(el => {
+        // console.log(quiz)
+        // console.log(answers.answers)
+        answers.answers.forEach(el => {
             let correctoption = quiz.questionlist[el.question].correctoption;
             let correctAnswer = quiz.questionlist[el.question].options[correctoption - 1];
             console.log(el.answer, correctAnswer)
             if (el.answer === correctAnswer) {
-                console.log('Answer is Correct')
+                // console.log('Answer is Correct')
                 correct++;
             } else {
-                console.log('Wrong Answer')
+                // console.log('Wrong Answer')
             }
             // console.log(el.question,el.answer)
         })
 
-        console.log(`Correct Answers :- ${correct}/${total}`)
+        // console.log(`Correct Answers :- ${correct}/${total}`)
         if (answers.answers.length !== length) {
-            console.log(`comparing ${answers.length} with ${length - 1}`)
+            // console.log(`comparing ${answers.length} with ${length - 1}`)
             alert('Fill The rest of the Quiz before Submission')
         }
         else {
@@ -101,44 +104,52 @@ function Quiz() {
     }
     return (
         <div className='quiz__container'>
-            <div className='quiz__header'>
-                <p>Quiz:- {quizid}</p>
-                <div>
-                    <p>Time:- 30 min</p>
-                    <p>Total Questions:- {quiz?.questionlist?.length}</p>
-                </div>
-            </div>
+            <NavBar />
+            <Grid container className='quiz__header' alignItems='center'>
+                <Typography variant='h5'>Quiz:- {quizid}</Typography>
+                <Grid item>
+                    <Typography variant='subtitle1'>Time:- 30 min</Typography>
+                    <Typography variant='subtitle2'>Total Questions:- {quiz?.questionlist?.length}</Typography>
+                </Grid>
+            </Grid>
             <div className='quiz__questions__container'>
                 {
                     quiz && quiz.questionlist[currentIndex] && <div>
                         <div className='quiz__question'>
-                            <p>{currentIndex + 1} . {quiz.questionlist[currentIndex].question}</p>
+                            <Typography variant='h6' >{currentIndex + 1} . {quiz.questionlist[currentIndex].question}</Typography>
                         </div>
                         <div className='quiz__options'>
-                            <ul>
-                                {
-                                    quiz.questionlist[currentIndex].options.map((el, index) => (
-                                        <li key={index}>
-                                            <label className="quiz__options__container" >{el}
-                                                <input type="radio" name="radio" value={el} onChange={updateAnswers} />
-                                                <span className="checkmark"></span>
-                                            </label>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">Options</FormLabel>
+                                <RadioGroup aria-label="gender" name="gender1" onChange={updateAnswers}>
+                                    {
+                                        quiz.questionlist[currentIndex].options.map((el, index) => (
+                                            // <li key={index}>
+                                            // {/* <label className="quiz__options__container" >{el}
+                                            //     <input type="radio" name="radio" value={el} onChange={updateAnswers} />
+                                            //     <span className="checkmark"></span>
+                                            // </label> */}
+                                            <FormControlLabel value={el} control={<Radio />} label={el} />
+                                            // <p>T</p>
+                                            // < FormControlLabel  value = "female" control = {< Radio />} label="Female" />
+                                            // <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                            // <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
+                                        ))
+                                    }
+                                </RadioGroup>
+                            </FormControl>
                         </div>
                     </div>
                 }
-            </div>
+            </div >
             <div>
-                <button onClick={decreaseCurrentIndex}>Previous</button>
-                <button onClick={increaseCurrentIndex}>Next</button>
+                <Button variant='contained' style={{ background: '#F7C425', color: "white", marginRight: '5px' }} onClick={decreaseCurrentIndex}>Previous</Button>
+                <Button variant='contained' style={{ background: '#79BE42', color: "white" }} onClick={increaseCurrentIndex}>Next</Button>
             </div>
             <div className='quiz__footer'>
-                <button id='quizsubmitbutton' onClick={submitQuiz}>Submit</button>
+                <Button variant='contained' color='primary' onClick={submitQuiz}>Submit</Button>
             </div>
-        </div>
+        </div >
     )
 }
 
