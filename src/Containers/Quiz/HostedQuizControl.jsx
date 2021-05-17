@@ -13,18 +13,18 @@ function HostedQuizControl() {
         setFilteredData(data[0]);
     }, [quizDetails])
     return (
-        <div>
+        <>
             <NavBar />
             <Grid container style={{ marginTop: "60px" }} justify='center' >
                 <Grid item xs={11}>
-                    <Typography variant='h5'>Showing Data for Quiz :- {quizname}</Typography>
+                    <Typography variant='h4'>Showing Data for Quiz :- {quizname}</Typography>
                 </Grid>
             </Grid>
             {/* {JSON.stringify(filteredData)} */}
             <div>
                 <Grid container justify='center'>
                     <Grid item xs={11}>
-                        <h3>Students Submission List</h3>
+                        <Typography variant='h5'>Students Submission List</Typography>
                     </Grid>
                     <Typography variant='h6'>Total Submissions :- {filteredData?.quizdata?.studentAnswers?.length}</Typography>
                 </Grid>
@@ -36,7 +36,7 @@ function HostedQuizControl() {
                                     <CardContent>
                                         <Grid container justify='space-between'>
                                             <Grid item>
-                                                <Typography variant='h6'>{student?.email}</Typography>
+                                                <Typography variant='h6'>{student?.displayName} ( {student?.email} ) </Typography>
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant='h6'>Correct Answers :- {student?.correct}/{student?.total}</Typography>
@@ -50,7 +50,7 @@ function HostedQuizControl() {
                     }
                 </Grid>
             </div>
-        </div>
+        </>
     )
 }
 

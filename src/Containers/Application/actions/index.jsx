@@ -41,17 +41,16 @@ export const action_Login = (username, password) => {
                 payload: error,
             })
         })
-
     }
 }
 
-export const action_Signup = (username, password) => {
+export const action_Signup = (username, password, displayName) => {
     return async (dispatch, getState) => {
         dispatch({
             type: ActionTypes.fetchSignupRequest,
         })
         await auth.createUserWithEmailAndPassword(username, password).then(cred => {
-            let tuser = new Schema.UserSchema({ email: cred.user.email });
+            let tuser = new Schema.UserSchema({ email: cred.user.email, displayName: displayName });
             db.collection(FirebaseCollections.users).doc(cred.user.uid).set(tuser.getUserData());
             dispatch({
                 type: ActionTypes.fetchSignupSuccess,
@@ -69,6 +68,15 @@ export const action_Signup = (username, password) => {
             })
         })
     };
+}
+
+export const action_updateDisplayName = (displayName) => {
+    return async (dispatch, getState) => {
+        let user = auth?.currentUser;
+        user?.updateProfile({
+            displayName: displayName,
+        });
+    }
 }
 
 export const action_Logout = () => {
@@ -260,6 +268,7 @@ export const action_joinClass = (class_name) => {
                             waitinglist: [...classdata.waitinglist, {
                                 id: auth.currentUser.uid,
                                 email: auth.currentUser.email,
+                                displayName: auth.currentUser.displayName,
                             }],
                         })
                         dispatch({
@@ -320,9 +329,9 @@ export const action_addRealTimeListener = () => {
                                 })
                             })
 
-                            // Triggering Update Will cause data to be written twice in the quizlist :ERROR XXXXXXX
+                            // Triggering Update Will cause data to be written twice in the quizlist :ERROR XXXXX :: SOLVED
                             db.collection(FirebaseCollections.class).doc(el.id).collection(FirebaseCollections.quiz).onSnapshot(querySnapshot => {
-                                console.log('Some Update happened in quiz collection')
+                                // console.log('Some Update happened in quiz collection')
                                 querySnapshot.docs.map(doc => {
                                     let index = quizlist.findIndex(x => x.id === doc.id);
                                     // console.dir(`Index of doc id :- ${index}`)
@@ -508,6 +517,7 @@ export const action_SubmitQuiz = ({ classname, answers, quizname, correct, total
                     studentAnswers: [...prevStudentAnswers, {
                         id: auth.currentUser.uid,
                         email: auth.currentUser.email,
+                        displayName: auth.currentUser.displayName,
                         answers: [...answers],
                         correct: correct,
                         total: total,
@@ -517,6 +527,45 @@ export const action_SubmitQuiz = ({ classname, answers, quizname, correct, total
             }
         })
 
+    }
+}
+
+export const action_PostAttendance = ({ classname, currentTime, endTime }) => {
+    return async (dispatch, getState) => {
+        // db.collection;
+        // console.log(`${classname} is Found`)
+        // console.log(`Current Time: -  ${currentTime}  End TIme:- ${endTime}`)
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.attendance).doc(`${currentTime}`).set({
+            isActive: true,
+            attendanceList: [],
+            startTime: currentTime,
+            endTime: endTime,
+        }, { merge: true });
+    }
+}
+
+export const action_MarkAttendance = ({ id, classname }) => {
+    return async (dispatch, getState) => {
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.attendance).doc(id).get().then(querySnapshot => {
+            if (querySnapshot) {
+                let data = querySnapshot.data();
+                let fdata = data.attendanceList.findIndex(x => x.id === auth.currentUser.uid);
+                if (fdata !== -1) {
+                    // console.log(`Already Present , Updating Status`);
+                    alert(`Attendance has Already been marked`);
+                } else {
+                    console.log(`Not Present Adding to present List`);
+                    let newList = [...data.attendanceList]
+                    newList.push({
+                        id: auth.currentUser.uid,
+                        name: auth.currentUser.displayName,
+                    })
+                    db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.attendance).doc(id).set({
+                        attendanceList: newList,
+                    }, { merge: true });
+                }
+            }
+        })
     }
 }
 // export const action_

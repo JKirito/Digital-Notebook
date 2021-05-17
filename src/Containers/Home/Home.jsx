@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Notebooks from '../../components/Notebooks/Notebooks';
 import { action_Logout } from '../Application/actions';
 import { ActionTypes } from '../Application/Actiontypes';
+import { auth } from '../Application/firebase';
 import { LOGOUT_BUTTON } from '../Styled/components';
 // import { db } from '../Application/firebase';
 import "./Home.css";

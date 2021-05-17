@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router';
@@ -39,16 +40,18 @@ const NavBar = () => {
                             <img src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png" alt="Avatar" />
                         </div>
                         <div className="hamburger_userdatacontainer">
-                            <div className='hamburger_userdatatitle'>{user?.email}</div>
-                            <div className='hamburger_userdatasubtitle' style={{ fontSize: "0.9rem" }}>MBA</div>
+                            {/* <div className='hamburger_userdatatitle'>{user?.displayName}</div> */}
+                            <Typography variant='subtitle1'>{user?.displayName}</Typography>
+                            <Typography variant='subtitle2'>{user?.email}</Typography>
+                            {/* <div className='hamburger_userdatasubtitle' style={{ fontSize: "0.9rem" }}>{user?.email}</div> */}
                         </div>
                     </div>
                     <div className='hamburger_list' style={{ userSelect: "none" }}>
                         <ul>
-                            <li className='ml_20' onClick={goToHome}>Home</li>
-                            <li className='ml_20' onClick={goToAttendance}>Attendance</li>
+                            <li className='ml_20' onClick={goToHome}><Typography variant='h6'>Home</Typography> </li>
+                            <li className='ml_20' onClick={goToAttendance}><Typography variant='h6'>Attendance</Typography> </li>
                             {/* <li className='ml_20' onClick={goToQuiz}>Quiz</li> */}
-                            <li className='ml_20' onClick={handlelogout}>Logout</li>
+                            <li className='ml_20' onClick={handlelogout}><Typography variant='h6'>Logout</Typography></li>
                         </ul>
                     </div>
                 </div>

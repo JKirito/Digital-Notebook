@@ -8,6 +8,7 @@ import CanvasReducer from "./CanvasReducer";
 import SdrawReducer from "./SdrawReducer";
 import ClassReducer from "./ClassReducer";
 import QuizReducer from "./QuizReducer";
+import AttendanceReducer from "./AttendanceReducer";
 
 
 // Exporting All The Reducers
@@ -21,6 +22,7 @@ const allReducers = combineReducers({
     SdrawReducer,
     ClassReducer,
     QuizReducer,
+    AttendanceReducer,
 })
 
 export default allReducers;

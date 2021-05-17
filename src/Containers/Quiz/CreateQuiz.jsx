@@ -88,7 +88,7 @@ function CreateQuiz() {
                             <TextField id="outlined-basic" label="Option 4" variant="outlined" fullWidth inputRef={questionFieldOption4Ref} />
                         </form>
                         <form noValidate autoComplete="off" className='customTextField'>
-                            <TextField id="outlined-basic" label="Correct Option Number" variant="outlined" fullWidth inputRef={questionAnswerFeildRef} />
+                            <TextField id="outlined-basic" label="Correct Option Number" variant="outlined" fullWidth inputRef={questionAnswerFeildRef} type='number' InputProps={{ inputProps: { min: 1, max: 4 } }} />
                         </form>
                         <Grid container justify='center' style={{ marginTop: '20px' }}>
                             <Button variant='contained' style={{ marginRight: '0', color: "white", background: "#0E897A" }} onClick={AddDataToQuiz}>Add</Button>

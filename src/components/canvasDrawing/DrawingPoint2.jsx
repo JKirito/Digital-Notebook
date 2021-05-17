@@ -170,7 +170,7 @@ const CanvasFrame = () => {
         }
     }, []);
 
-    return <div>
+    return <>
         <Header />
         <div>
             <SdrawCanvas />
@@ -183,7 +183,7 @@ const CanvasFrame = () => {
             </div>
         </div>
         <Footer />
-    </div>;
+    </>;
 }
 
 //__________________________     COMPONENTS     _____________________________ //

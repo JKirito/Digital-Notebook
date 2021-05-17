@@ -48,6 +48,10 @@ export const ActionTypes = {
     setCurrentQuiz: "SET_CURRENT_QUIZ",
     setHostedQuiz: "FETCH_HOSTED_QUIZES",
 
+    // Attendance Related Actions
+    updateAttendanceList: 'UPDATE_ATTENDANCE_LIST',
+    updateAvailableAttendanceList: "UPDATE_AVAILABLE_ATTENDANCE_LIST",
+
 
     // Canvas Related Actions
     changeCanvasBrushColor: "SET_BRUSH_COLOR",
@@ -70,4 +74,5 @@ export const FirebaseCollections = {
     notebooks: 'notebooks',
     class: 'class',
     quiz: 'quiz',
+    attendance: 'attendance',
 }

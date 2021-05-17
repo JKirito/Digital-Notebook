@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { action_Signup } from '../Application/actions';
+import { action_Signup, action_updateDisplayName } from '../Application/actions';
 import { ActionTypes } from '../Application/Actiontypes';
+import { auth } from '../Application/firebase';
 import { LOGIN_BUTTON, SIGNUP_BUTTON } from '../Styled/components';
 import "./Signup.css";
 
@@ -57,6 +58,7 @@ function Signup() {
 
     useEffect(() => {
         if (isSuccessful) {
+            dispatch(action_updateDisplayName(displaynameRef.current.value));
             history.push('/');
         }
     })
