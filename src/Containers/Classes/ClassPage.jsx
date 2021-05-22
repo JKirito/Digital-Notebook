@@ -23,12 +23,13 @@ function ClassPage() {
     let filteredArray;
     const [isModalOpen, setModalOpen] = useState(false)
     const [isAttendanceDetailModalOpen, setAttendanceDetailModalOpen] = useState(false)
+    const [isAssignmentModalOpen, setAssignmentModalOpen] = useState(false)
     const [currentSelectedAttendance, setCurrentSelectedAttendance] = useState({
         el: null,
     });
 
     useEffect(() => {
-        let unsubscribe = db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.attendance).onSnapshot(querySnapshot => {
+        let unsubscribeAttendance = db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.attendance).onSnapshot(querySnapshot => {
             let attendanceList = [];
             if (querySnapshot) {
                 querySnapshot.docs.forEach(doc => {
@@ -40,14 +41,30 @@ function ClassPage() {
                     // console.dir(doc.data());
                 })
             }
-            console.log(attendanceList);
+            // console.log(attendanceList);
             dispatch({
                 type: ActionTypes.updateAttendanceList,
                 payload: attendanceList,
             })
         });
+        let unsubscribeAssignment = db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.assignment).onSnapshot(querySnapshot => {
+            let assignmentList = [];
+            if (querySnapshot) {
+                querySnapshot.docs.forEach(doc => {
+                    assignmentList.push({
+                        id: doc.id,
+                        data: doc.data(),
+                    });
+                });
+            }
+            dispatch({
+                type: ActionTypes.updateAssignmentList,
+                payload: assignmentList,
+            })
+        })
         return () => {
-            unsubscribe();
+            unsubscribeAttendance();
+            unsubscribeAssignment();
         }
     }, [])
 
@@ -68,20 +85,23 @@ function ClassPage() {
             <div style={{ width: '90%', margin: '0 auto', }}>
                 <div className='classpageamargintop'>
                     <Typography variant='h4'>Welcome to {classname} class</Typography>
-                    {isHost ? <HostDisplayUI
-                        myclasses={myclasses}
-                        classname={classname}
-                        quizList={quizList}
-                        filteredData={filteredData}
-                        isModalOpen={isModalOpen}
-                        setModalOpen={setModalOpen}
-                        isAttendanceDetailModalOpen={isAttendanceDetailModalOpen}
-                        setAttendanceDetailModalOpen={setAttendanceDetailModalOpen}
-                        currentSelectedAttendance={currentSelectedAttendance}
-                        setCurrentSelectedAttendance={setCurrentSelectedAttendance} />
-                        : <JoinDisplayUI
+                    {
+                        isHost ? <HostDisplayUI
+                            myclasses={myclasses}
+                            classname={classname}
                             quizList={quizList}
-                            classname={classname} />}
+                            filteredData={filteredData}
+                            isModalOpen={isModalOpen}
+                            setModalOpen={setModalOpen}
+                            isAttendanceDetailModalOpen={isAttendanceDetailModalOpen}
+                            setAttendanceDetailModalOpen={setAttendanceDetailModalOpen}
+                            currentSelectedAttendance={currentSelectedAttendance}
+                            setCurrentSelectedAttendance={setCurrentSelectedAttendance}
+                            setAssignmentModalOpen={setAttendanceDetailModalOpen} />
+                            : <JoinDisplayUI
+                                quizList={quizList}
+                                classname={classname} />
+                    }
                 </div>
             </div>
         </div>
@@ -103,6 +123,7 @@ const HostDisplayUI = ({ myclasses, classname, filteredData, quizList, isModalOp
     const dispatch = useDispatch();
     const history = useHistory();
     let attendanceReducerList = useSelector(state => state.AttendanceReducer);
+    let assignmentReducerList = useSelector(state => state.AssignmentReducer);
     const stylesClasses = useStyles();
     const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
     const rejectUserAccessToClass = (el) => {
@@ -124,6 +145,12 @@ const HostDisplayUI = ({ myclasses, classname, filteredData, quizList, isModalOp
     }
     const createQuiz = () => {
         history.push(`/class/createquiz/${classname}`)
+    }
+    const setupAssignment = (classname) => {
+        history.push(`/class/createassignment/${classname}`);
+    }
+    const viewAssignmentDetails = (el) => {
+        history.push(`/class/${classname}/assignment/detail/${el.data.topic}`);
     }
 
     return (
@@ -190,6 +217,34 @@ const HostDisplayUI = ({ myclasses, classname, filteredData, quizList, isModalOp
                     </Paper> */}
                 </Grid>
             </Grid>
+            <Grid container justify='space-between' alignItems='center' style={{ marginTop: '20px' }}>
+                <Grid item>
+                    <Typography variant='h5'>Assignments</Typography>
+                </Grid>
+                <Grid item>
+                    <Button variant='contained' style={{ background: '#57C245', color: 'white', fontWeight: 'bold' }} onClick={() => { setupAssignment(classname) }}>Create Assignment</Button>
+                </Grid>
+            </Grid>
+            <Grid container spacing={3} style={{ marginTop: "10px" }}>
+                {
+                    assignmentReducerList && assignmentReducerList?.assignmentList?.map((el, index) => {
+                        return <Grid item key={index} xs={6} md={4}>
+                            <Card variant='outlined'>
+                                <CardContent>
+                                    <Grid container justify='space-between'>
+                                        <Grid item>
+                                            <Typography variant='h6'>{el.data.topic}</Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button variant='contained' color='primary' onClick={() => { viewAssignmentDetails(el) }}>View Detail</Button>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    })
+                }
+            </Grid>
             <div style={{ marginTop: '20px' }}>
                 <Typography variant='h5' className='heading'>Waiting Room</Typography>
                 <Grid container spacing={2}>
@@ -231,6 +286,7 @@ const JoinDisplayUI = ({ quizList, classname }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     let attendanceReducerList = useSelector(state => state.AttendanceReducer);
+    let assignmentReducerList = useSelector(state => state.AssignmentReducer);
     useEffect(() => {
         // console.log(quizList);
     }, [quizList])
@@ -244,6 +300,9 @@ const JoinDisplayUI = ({ quizList, classname }) => {
     const MarkAttendance = (id) => {
         dispatch(action_MarkAttendance({ id: id, classname: classname }));
     };
+    const GoToAssignmentSubmission = (topic) => {
+        history.push(`/class/${classname}/assignment/${topic}`);
+    }
     return (
         <div>
             <Typography variant='h5'>Available Quizes</Typography>
@@ -266,6 +325,26 @@ const JoinDisplayUI = ({ quizList, classname }) => {
                         </Grid>
                     ))
                 }
+            </Grid>
+            <Grid container style={{ marginTop: "10px" }}>
+                <Typography variant='h5'>Available Assignments</Typography>
+                <Grid container spacing={3}>
+                    {
+                        assignmentReducerList && assignmentReducerList.availableAssignmentList && assignmentReducerList.availableAssignmentList.map((el, index) => (
+                            <Grid item xs={12} md={6} lg={3} xl={2} key={index}>
+                                <Card variant='outlined'>
+                                    <CardContent>
+                                        <Typography variant='h6'>{el.data.topic}</Typography>
+                                        {/* <Typography variant='subtitle2'>Quiz Description</Typography> */}
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button variant='contained' color='primary' onClick={() => { GoToAssignmentSubmission(el.data.topic) }}>Submit</Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))
+                    }
+                </Grid>
             </Grid>
             <Grid container style={{ marginTop: '20px' }}>
                 <Typography variant='h5'>Available Attendance</Typography>
@@ -462,5 +541,4 @@ const AttendanceDetailModal = ({ showModal, setShowModal, classname, currentSele
         </Modal>
     )
 }
-
 export default ClassPage

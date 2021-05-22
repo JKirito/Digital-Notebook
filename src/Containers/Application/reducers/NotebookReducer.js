@@ -18,6 +18,11 @@ const NotebookReducer = (state = initialState, action) => {
                     total_page: action.payload.total_page,
                     current_notebook_data: action.payload.notebook_data,
             };
+        case ActionTypes.setNotebookTotalPage:
+            return {
+                ...state,
+                total_page: action.payload,
+            };
         default:
             return {
                 ...state,

@@ -18,10 +18,19 @@
   position: absolute;
   z-index: 20;
 }
+.d_headeronly {
+  height: 3rem; /* 48px */
+  width: 100%;
+  /* background-color: var(--d_darkGray); */
+  background-color: #1e6091;
+  position: absolute;
+  z-index: 20;
+}
 .d_footer {
   position: absolute;
   bottom: 0;
   grid-template-columns: repeat(5, 1fr);
+  background-color: #1e6091;
 }
 .d_iconcolor {
   color: white;
@@ -30,7 +39,8 @@
   position: relative;
 }
 .d_footerplus {
-  background-color: var(--d_lightGray);
+  /* background-color: var(--d_lightGray); */
+  background-color: #5994c0;
   position: absolute;
   left: 0;
   right: 0;
@@ -68,7 +78,8 @@
 /* .d_iconContainer:hover {
 } */
 .d_iconActive {
-  background-color: var(--d_activeColor);
+  /* background-color: var(--d_activeColor); */
+  background-color: #5994c0;
 }
 .d_toollist {
   z-index: 20;
@@ -79,7 +90,8 @@
   flex-direction: column-reverse;
   align-items: center;
   justify-content: space-evenly;
-  background-color: var(--d_darkGray);
+  /* background-color: var(--d_darkGray); */
+  background-color: #1e6091;
   padding: 4px;
   border-radius: 10px;
   /* transform: rotate(-90deg); */
@@ -183,7 +195,7 @@ input[type="color"]::-moz-color-swatch {
   top: 0;
 }
 
-#drawbutton:hover:after  {
+#drawbutton:hover:after {
   content: "Brush";
   display: block;
   position: relative;
@@ -193,7 +205,7 @@ input[type="color"]::-moz-color-swatch {
   text-align: center;
 }
 
-#eraserbutton:hover:after  {
+#eraserbutton:hover:after {
   content: "Eraser";
   display: block;
   position: relative;
@@ -203,7 +215,7 @@ input[type="color"]::-moz-color-swatch {
   text-align: center;
 }
 
-#add:hover:after  {
+#add:hover:after {
   content: "Undo";
   display: block;
   position: relative;
@@ -214,7 +226,7 @@ input[type="color"]::-moz-color-swatch {
   text-align: center;
 }
 
-#savebutton:hover:after  {
+#savebutton:hover:after {
   content: "Save";
   display: block;
   position: relative;
@@ -224,7 +236,7 @@ input[type="color"]::-moz-color-swatch {
   text-align: center;
 }
 
-#clearbutton:hover:after{ 
+#clearbutton:hover:after {
   content: "Delete";
   display: block;
   position: relative;
@@ -232,4 +244,4 @@ input[type="color"]::-moz-color-swatch {
   height: 1rem;
   font-weight: bold;
   text-align: center;
-} 
+}

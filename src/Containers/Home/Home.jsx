@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Notebooks from '../../components/Notebooks/Notebooks';
 import { action_Logout } from '../Application/actions';
 import { ActionTypes } from '../Application/Actiontypes';
@@ -14,6 +14,11 @@ import NavBar from './NavBar';
 function Home() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.AuthReducer.user);
+    const history = useHistory();
+    const handlelogout = (e) => {
+        dispatch(action_Logout());
+        history.push('/');
+    }
 
 
     useEffect(() => {
@@ -88,7 +93,7 @@ function Home() {
                     <div className="home_icon_back">
                         <i className="fas fa-bell fa-2x"></i>
                     </div>
-                    <div className="home_icon_back">
+                    <div className="home_icon_back" onClick={handlelogout} >
                         <i className="fas fa-sign-out-alt fa-2x"></i>
                     </div>
                     <div className="home_icon_back">

@@ -16,12 +16,14 @@ const SdrawReducer = (state = initialState, action) => {
                 drawingData: state.drawingData.concat(action.payload),
             };
         case ActionTypes.setSdrawCanvasDrawingData:
-            // console.log();
+            let t = action?.payload?.fetchedData?.filter(x => x.page === action.payload.current_page)
+            // console.log(t);
             try {
-                newData = JSON.parse(action.payload[0] ?.data);
+                newData = JSON.parse(t[0] ?.data);
             } catch (e) {
                 // console.log("Error")
-                newData = action.payload[0].data;
+                // newData = t[0].data;
+                newData = [];
             }
             return {
                 ...state,

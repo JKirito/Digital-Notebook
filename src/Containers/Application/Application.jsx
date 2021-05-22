@@ -13,6 +13,9 @@ import ClassPage from '../Classes/ClassPage.jsx';
 import Quiz from '../Quiz/Quiz.jsx';
 import CreateQuiz from '../Quiz/CreateQuiz.jsx';
 import HostedQuizControl from '../Quiz/HostedQuizControl.jsx';
+import Assignment from '../Assignment/Assignment.jsx';
+import SubmitAssignment from '../Assignment/SubmitAssignment.jsx';
+import AssignmentViewer from '../Assignment/AssignmentViewer.jsx';
 
 function Application() {
     return (
@@ -35,18 +38,20 @@ const App = () => {
                 <PrivateRoute exact path='/notebooks/:name' component={NotebookHolder} />
                 <PrivateRoute exact path='/notebooks' component={NotesHome} />
                 {/* <Route path='/notebooks' component={NotebookHolder} /> */}
-                <Route path='/signup' component={Signup} />
-                <Route path='/login' component={Login} />
-                <Route path='/quiz' component={Quiz} />
-                <Route exact path='/class/:classname/quiz/:quizname' component={Quiz} />
-                <Route exact path='/class/:classname/control/:quizname' component={HostedQuizControl} />
-                <Route path='/class/createquiz/:classname' component={CreateQuiz} />
-                <Route exact path='/class' component={GroupHome} />
-                <Route exact path='/class/:classname' component={ClassPage} />
+                <Route exact path='/signup' component={Signup} />
+                <Route exact path='/login' component={Login} />
+                <PrivateRoute exact path='/quiz' component={Quiz} />
+                <PrivateRoute exact path='/class/:classname/quiz/:quizname' component={Quiz} />
+                <PrivateRoute exact path='/class/:classname/control/:quizname' component={HostedQuizControl} />
+                <PrivateRoute exact path='/class/createquiz/:classname' component={CreateQuiz} />
+                <PrivateRoute exact path='/class/createassignment/:classname' component={Assignment} />
+                <PrivateRoute exact path='/class' component={GroupHome} />
+                <PrivateRoute exact path='/class/:classname' component={ClassPage} />
+                <PrivateRoute exact path='/class/:classname/assignment/:topic' component={SubmitAssignment} />
+                <PrivateRoute exact path='/class/:classname/assignment/detail/:topic' component={AssignmentViewer} />
             </Switch>
         </AnimatePresence>
     );
 };
-
 
 export default Application

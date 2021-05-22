@@ -1,19 +1,20 @@
+import { Button, Grid, IconButton, Typography } from '@material-ui/core';
+import { Add, ArrowBack, ArrowForward } from '@material-ui/icons';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { action_SaveNotebook, action_WriteDataToNotebook } from '../../Containers/Application/actions';
+import { action_AddPage, action_SaveNotebook, action_SetCurrentNotebookPage, action_WriteDataToNotebook } from '../../Containers/Application/actions';
 import { ActionTypes } from '../../Containers/Application/Actiontypes';
 import { BrushSizeChanger, ColorSelector, DcontainCanvas, GridCanvas, GridChecker, SdrawCanvas } from './components';
 
 import "./DrawingPoint.css";
 
-
 function DrawingPoint2() {
     let currentData = useSelector(state => state.NotebookReducer.current_notebook_data);
     // let currentpage = useSelector(state => state.NotebookReducer.current_page);
-    useEffect(() => {
-        // DrawingData = currentData?.filter(el => el.page === currentpage)[0].data;
-        // console.log(DrawingData);
-    }, [currentData]);
+    // useEffect(() => {
+    // DrawingData = currentData?.filter(el => el.page === currentpage)[0].data;
+    // console.log(DrawingData);
+    // }, [currentData]);
     return (
         <>
             <CanvasFrame />
@@ -24,19 +25,109 @@ function DrawingPoint2() {
 const Header = () => {
     let current_page = useSelector(state => state.NotebookReducer.current_page)
     let total_page = useSelector(state => state.NotebookReducer.total_page)
+    let doc_data = useSelector(state => state.SdrawReducer.drawingData);
+    let current_notebook_name = useSelector(state => state.NotebookReducer.current_notebook_name)
+    let doc_name = useSelector(state => state.NotebookReducer.current_notebook_name);
+    let current_notebook_data = useSelector(state => state.NotebookReducer.current_notebook_data)
+    let dispatch = useDispatch();
+    const AddPage = () => {
+        dispatch(action_AddPage({ total_page: total_page, current_notebook_data: current_notebook_data, doc_name: doc_name }))
+        // dispatch({
+        //     type: ActionTypes.setNotebookTotalPage,
+        //     payload: total_page + 1,
+        // })
+    }
+    const BackPage = () => {
+        // let x = current_notebook_data;
+        // let index;
+        // console.dir(x);
+        // index = x.findIndex(t => t.page === current_page);
+        // console.dir(index);
+        // x[index].data = JSON.stringify(doc_data);
+        // console.dir(x);
+
+        dispatch(action_SaveNotebook({
+            current_page: current_page,
+            total_page: total_page,
+            data: current_notebook_data,
+            doc_name: doc_name,
+            doc_data: doc_data,
+        }));
+        let page = current_page - 1;
+        if (page <= 0) {
+            return;
+        }
+        dispatch(action_SetCurrentNotebookPage({
+            current_notebook_name: current_notebook_name,
+            page: page,
+        }));
+
+    }
+    const ForwardPage = () => {
+        dispatch(action_SaveNotebook({
+            current_page: current_page,
+            total_page: total_page,
+            data: current_notebook_data,
+            doc_name: doc_name,
+            doc_data: doc_data,
+        }));
+        let page = current_page + 1;
+        if (page > total_page) {
+            return;
+        }
+        dispatch(action_SetCurrentNotebookPage({
+            current_notebook_name: current_notebook_name,
+            page: page,
+        }));
+
+    }
     return <React.Fragment>
-        <div className="d_headerfooterbasic">
-            <div className="d_pagenav">
-                {current_page}/{total_page}
-            </div>
-        </div>
+        <Grid container className="d_headeronly" alignContent='center' justify='space-between' style={{ color: "white", padding: "0 20px" }}>
+            <Grid item>
+                <Grid container alignItems='center' style={{ height: "100%" }}>
+                    <Grid item>
+                        <Typography variant='subtitle1'>{current_notebook_name}</Typography>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item >
+                <Grid container alignItems='center' justify='center' direction='row'>
+                    <Grid item>
+                        {/* <Button>Left</Button> */}
+                        <IconButton onClick={BackPage} style={{ color: "white" }}>
+                            <ArrowBack />
+                        </IconButton>
+                    </Grid>
+                    <Grid item style={{ margin: "0 6px" }}>
+                        <Grid container alignItems='center' direction='row' style={{ height: "100%" }}>
+                            <Grid item>
+                                <Typography variant='subtitle1'>{current_page} / {total_page}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        {/* <Button>Right</Button> */}
+                        <IconButton onClick={ForwardPage} style={{ color: "white" }}>
+                            <ArrowForward />
+                        </IconButton>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item>
+                <IconButton onClick={AddPage} style={{ color: "white" }}>
+                    <Add />
+                </IconButton>
+            </Grid>
+        </Grid>
     </React.Fragment>;
 }
 const Footer = () => {
     const dispatch = useDispatch();
     let current_page = useSelector(state => state.NotebookReducer.current_page);
     let doc_name = useSelector(state => state.NotebookReducer.current_notebook_name);
+    let total_page = useSelector(state => state.NotebookReducer.total_page)
     let doc_data = useSelector(state => state.SdrawReducer.drawingData);
+    let current_notebook_data = useSelector(state => state.NotebookReducer.current_notebook_data)
     let canvasMaxBoundryHeight = useSelector(state => state.CanvasReducer.maxBoundryHeight);
     let canvasMaxBoundryWidth = useSelector(state => state.CanvasReducer.maxBoundryWidth);
     const ActivateEraser = () => {
@@ -84,7 +175,8 @@ const Footer = () => {
         let saveButton = document.getElementById("savebutton");
         removeAllActiveClassesFromTools();
         saveButton.classList.add("d_iconActive");
-        dispatch(action_SaveNotebook({ current_page: current_page, data: JSON.stringify(doc_data), doc_name: doc_name }));
+        dispatch(action_SaveNotebook({ current_page: current_page, total_page: total_page, data: current_notebook_data, doc_name: doc_name, doc_data: doc_data }));
+        alert(`Document Saved`);
     }
     const undoCanvas = () => {
         dispatch({
@@ -146,6 +238,7 @@ const CanvasFrame = () => {
     // let canvasHeight = useSelector(state => state.CanvasReducer.canvasHeight);
     let dispatch = useDispatch();
     let fetchedData = useSelector(state => state.NotebookReducer.current_notebook_data);
+    let current_page = useSelector(state => state.NotebookReducer.current_page);
     const Resize = () => {
         dispatch({
             type: ActionTypes.updateCanvasDimensions,
@@ -157,9 +250,10 @@ const CanvasFrame = () => {
     }
     useEffect(() => {
         if (fetchedData) {
+            // console.dir(fetchedData);
             dispatch({
                 type: ActionTypes.setSdrawCanvasDrawingData,
-                payload: fetchedData,
+                payload: { fetchedData, current_page, },
             })
         }
     }, [fetchedData]);

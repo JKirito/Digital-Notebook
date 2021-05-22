@@ -1,5 +1,5 @@
 import { ActionTypes, FirebaseCollections } from "../Actiontypes";
-import { auth, db, timestamp } from "../firebase";
+import { auth, db, storage, timestamp } from "../firebase";
 import { Schema } from "./DataSchema";
 
 export const action_AutomaticDetectLogin = (user) => {
@@ -134,6 +134,14 @@ export const action_FetchNotebooks = (uid) => {
     }
 };
 
+export const action_SetCurrentNotebookPage = ({ page, current_notebook_name }) => {
+    return async (dispatch, getState) => {
+        db.collection(FirebaseCollections.users).doc(auth.currentUser.uid).collection(FirebaseCollections.notebooks).doc(current_notebook_name).set({
+            notebook_currentpage: page,
+        }, { merge: true });
+    }
+}
+
 export const action_CreateNewNotebook = ({ notebookname, uid }) => {
     return (dispatch, getState) => {
         // console.log(name);
@@ -143,7 +151,7 @@ export const action_CreateNewNotebook = ({ notebookname, uid }) => {
             notebook_data: [
                 {
                     data: [],
-                    page: null,
+                    page: 1,
                 }
             ],
             createdAt: timestamp.fromDate(new Date()),
@@ -152,20 +160,46 @@ export const action_CreateNewNotebook = ({ notebookname, uid }) => {
 }
 
 // Currently Working for One Page only.
-export const action_SaveNotebook = ({ data, current_page, doc_name }) => {
+export const action_SaveNotebook = ({ data, current_page, doc_name, doc_data, total_page }) => {
     return (dispatch, getState) => {
-        // console.dir(current_page);
-        // console.dir(data);
+        console.dir(data);
+        // console.dir(JSON.stringify(doc_data));
+        let index = data.findIndex(el => el.page === current_page);
+        console.dir(index);
+        if (index >= 0) {
+            console.log('Found And Updating')
+            data[index].data = JSON.stringify(doc_data);
+        }
+        console.log(data);
         db.collection(FirebaseCollections.users).doc(auth.currentUser.uid).collection(FirebaseCollections.notebooks).doc(doc_name).set({
             notebook_currentpage: current_page,
-            notebook_data: [
-                {
-                    data: data,
-                    page: current_page,
-                }
-            ],
+            notebook_totalpage: total_page,
+            notebook_data: data,
         }, { merge: true });
     };
+}
+
+export const action_AddPage = ({ total_page, current_notebook_data, doc_name }) => {
+    return async (dispatch, getState) => {
+        current_notebook_data.push({
+            page: total_page + 1,
+            data: [],
+        })
+        db.collection(FirebaseCollections.users).doc(auth.currentUser.uid).collection(FirebaseCollections.notebooks).doc(doc_name).set({
+            notebook_totalpage: total_page + 1,
+            notebook_data: current_notebook_data,
+        }, { merge: true });
+        // dispatch({
+        //     type: ActionTypes.setNotebookTotalPage,
+        //     payload: total_page + 1,
+        // })
+    }
+}
+export const action_DeleteNoteBook = (el) => {
+    return async (dispatch, getState) => {
+        await db.collection(FirebaseCollections.users).doc(auth.currentUser.uid).collection(FirebaseCollections.notebooks).doc(el.doc_name).delete();
+        alert('Delete Successful')
+    }
 }
 
 export const action_WriteDataToNotebook = ({ data, page, doc_name }) => {
@@ -566,6 +600,71 @@ export const action_MarkAttendance = ({ id, classname }) => {
                 }
             }
         })
+    }
+}
+
+export const action_PostAssignment = ({ classname, topic, questionList, dueDate }) => {
+    return async (dispatch, getState) => {
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.assignment).add({
+            questionList: questionList,
+            topic: topic,
+            createdAt: new Date().getTime(),
+            dueDate: dueDate,
+            submissions: [],
+        })
+    }
+}
+
+export const action_uploadAssignment = ({ file, classname, topic }) => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.setAssignmentLoading,
+            payload: true,
+        })
+        let snapshot = await db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.assignment).where('topic', '==', topic).get();
+        if (snapshot.empty) return;
+        let docid = snapshot.docs[0].id;
+        let submissions = snapshot.docs[0].data().submissions;
+        // console.log(submissions)
+        if (submissions.length > 0) {
+            let t = submissions.filter(x => x.id === auth.currentUser.uid);
+            if (t) {
+                // console.log('Already Submitted, cant do twice')
+                alert('Already Submitted, cant do twice')
+                dispatch({
+                    type: ActionTypes.setAssignmentError,
+                    payload: {
+                        code: 'Submission Already Present',
+                        message: 'Already Submitted, cant do twice',
+                    },
+                })
+                return;
+            }
+        }
+        let ref = storage.ref();
+        let fileRef = ref.child(file.name)
+        await fileRef.put(file)
+        const fileURL = await fileRef.getDownloadURL();
+        console.log(fileURL);
+        submissions.push({
+            id: auth.currentUser.uid,
+            url: fileURL,
+            displayName: auth.currentUser.displayName,
+        })
+        console.log(`Submissions Are :- ${submissions}`)
+        db.collection(FirebaseCollections.class).doc(classname).collection(FirebaseCollections.assignment).doc(docid).set({
+            submissions: submissions,
+        }, { merge: true });
+        dispatch({
+            type: ActionTypes.setAssignmentLoading,
+            payload: false,
+        })
+        dispatch({
+            type: ActionTypes.setAssignmentError,
+            payload: null,
+        })
+        alert('Assignment Submitted Successfully')
+        // console.log(snapshot.docs[0].data())
     }
 }
 // export const action_

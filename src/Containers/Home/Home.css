@@ -16,7 +16,8 @@
   bottom: 0;
   right: 0;
   width: 40vw;
-  background-color: #525252;
+  /* background-color: #525252; */
+  background-color: #1e6091;
   border-radius: 60px 0px 0px 0px;
   color: white;
   display: grid;
@@ -34,7 +35,7 @@
   transition: background 0.3s, width 0.2s, height 0.2s;
 }
 .home_hamburger_menu:hover {
-  background: #252525;
+  background: #5994c0;
   color: white;
   width: 52px;
   height: 52px;
@@ -62,7 +63,7 @@
   transition: background 0.3s, width 0.2s, height 0.2s;
 }
 .home_icon_back:hover {
-  background: #252525;
+  background: #5994c0;
   width: 55px;
   height: 55px;
 }
@@ -72,7 +73,8 @@
   top: 0;
   height: 100vh;
   width: 300px;
-  background-color: #252525;
+  /* background-color: #252525; */
+  background: #1e6091;
   display: flex;
   justify-content: center;
   z-index: 3;

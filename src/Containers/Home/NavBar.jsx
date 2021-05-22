@@ -49,7 +49,7 @@ const NavBar = () => {
                     <div className='hamburger_list' style={{ userSelect: "none" }}>
                         <ul>
                             <li className='ml_20' onClick={goToHome}><Typography variant='h6'>Home</Typography> </li>
-                            <li className='ml_20' onClick={goToAttendance}><Typography variant='h6'>Attendance</Typography> </li>
+                            {/* <li className='ml_20' onClick={goToAttendance}><Typography variant='h6'>Attendance</Typography> </li> */}
                             {/* <li className='ml_20' onClick={goToQuiz}>Quiz</li> */}
                             <li className='ml_20' onClick={handlelogout}><Typography variant='h6'>Logout</Typography></li>
                         </ul>

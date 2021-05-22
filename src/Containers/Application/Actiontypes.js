@@ -25,6 +25,7 @@ export const ActionTypes = {
     insertDataToNotebookReducer: "INSERT_NOTEBOOKDATA_TO_NOTEBOOK_REDUCER",
     deleteLastDataFromNotebookReducer: "DELETE_NOTEBOOKDATA_FROM_NOTEBOOK_REDUCER",
     setNotebookToNotebookReducer: "SET_NOTEBOOK_TO_NOTEBOOK_REDUCER",
+    setNotebookTotalPage: "SET_NOTEBOOK_TOTAL_PAGES",
 
 
 
@@ -52,6 +53,11 @@ export const ActionTypes = {
     updateAttendanceList: 'UPDATE_ATTENDANCE_LIST',
     updateAvailableAttendanceList: "UPDATE_AVAILABLE_ATTENDANCE_LIST",
 
+    // Assignment Related Actions 
+    updateAssignmentList: 'UPDATE_ASSIGNMENT_LIST',
+    setAssignmentLoading: 'SET_ASSIGNMENT_LOADING',
+    setAssignmentError: 'SET_ASSIGNMENT_ERROR',
+
 
     // Canvas Related Actions
     changeCanvasBrushColor: "SET_BRUSH_COLOR",
@@ -75,4 +81,5 @@ export const FirebaseCollections = {
     class: 'class',
     quiz: 'quiz',
     attendance: 'attendance',
+    assignment: 'assignment',
 }
