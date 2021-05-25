@@ -686,7 +686,7 @@ export const action_ExportNotebook = (data, canvasReducerData, doc_name) => {
         for (let i = 0; i < data.length; i++) {
             let imgData = await DrawDataToCanvas(data[i].data, canvasReducerData);
             // await AddDataToPdf(doc, i, data.length, imgData, doc_name);
-            doc.addImage(imgData, "JPEG", 0, 0);
+            doc.addImage(imgData, "JPEG", 0, 0, width, height);
             if (i !== data.length - 1) {
                 doc.addPage();
             }
@@ -708,8 +708,8 @@ const DrawDataToCanvas = async (drawingData, canvasReducerData) => {
     let drawCanvasctx = drawCanvas.getContext("2d")
     drawCanvas.width = canvasReducerData.canvasWidth;
     drawCanvas.height = canvasReducerData.canvasHeight;
-    drawCanvasctx.fillStyle = "white";
-    drawCanvasctx.fillRect(0, 0, canvasReducerData.canvasWidth, canvasReducerData.canvasHeight);
+    // drawCanvasctx.fillStyle = "white";
+    // drawCanvasctx.fillRect(0, 0, canvasReducerData.canvasWidth, canvasReducerData.canvasHeight);
 
     // console.log(`Type:- ${typeof (drawingData)}`);
     if (typeof (drawingData) === "string") {
@@ -764,7 +764,7 @@ const DrawDataToCanvas = async (drawingData, canvasReducerData) => {
         })
     }
     // let templink = document.createElement('image');
-    let img = drawCanvas.toDataURL("image/jpeg", 0.5);
+    let img = drawCanvas.toDataURL("image/jpeg", 1);
     return img;
     // templink.download = "page.png"
     // templink.src = img;

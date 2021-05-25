@@ -1,5 +1,5 @@
 import { Button, Grid, IconButton, Typography } from '@material-ui/core';
-import { Add, ArrowBack, ArrowForward, GetApp } from '@material-ui/icons';
+import { Add, ArrowBack, ArrowForward, GetApp, Save } from '@material-ui/icons';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -200,7 +200,10 @@ const Footer = () => {
         removeAllActiveClassesFromTools();
         saveButton.classList.add("d_iconActive");
         dispatch(action_SaveNotebook({ current_page: current_page, total_page: total_page, data: current_notebook_data, doc_name: doc_name, doc_data: doc_data }));
-        alert(`Document Saved`);
+        setTimeout(() => {
+            removeAllActiveClassesFromTools();
+            alert(`Document Saved`);
+        }, 100)
     }
     const undoCanvas = () => {
         dispatch({
@@ -219,6 +222,9 @@ const Footer = () => {
             type: ActionTypes.setSdrawCanvasDrawingData,
             payload: [{ data: [] }],
         })
+        setTimeout(() => {
+            removeAllActiveClassesFromTools();
+        }, 100)
     }
 
     useEffect(() => {
@@ -238,10 +244,8 @@ const Footer = () => {
 
         <div className="d_iconContainer" id="savebutton" onClick={() => { SaveDocument() }}>
             <i className="fas fa-save fa-lg"></i>
+            {/* <Save /> */}
         </div>
-        {/* <div className="d_iconContainer" id="exportbutton" onClick={ExportPdf}>
-            <i className="fas fa-file-export fa-lg"></i>
-        </div> */}
         <div className="d_iconContainer" id="clearbutton" onClick={clearCanvas}>
             <i className="fas fa-trash fa-lg"></i>
         </div>

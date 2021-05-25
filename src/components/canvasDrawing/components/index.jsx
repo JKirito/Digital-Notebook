@@ -1,3 +1,4 @@
+import { Checkbox, Slider } from '@material-ui/core';
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActionTypes } from '../../../Containers/Application/Actiontypes';
@@ -22,15 +23,28 @@ export const ColorSelector = () => {
 export const BrushSizeChanger = () => {
     let dispatch = useDispatch();
     let brushSize = useSelector(state => state.CanvasReducer.brushRadius);
-    const changeBrushSize = (e) => {
+    const changeBrushSize = (e, data) => {
         dispatch({
             type: ActionTypes.changeCanvasBrushSize,
-            payload: e.target.value,
+            payload: data,
+            // payload: e.target.value,
         })
     };
     return (
         <>
-            <input type="range" className="d_spick" id="" min={5} max={90} orient="vertical" value={brushSize} onChange={changeBrushSize} />
+            {/* <input type="range" className="d_spick" id="" min={5} max={90} orient="vertical" value={brushSize} onChange={changeBrushSize} /> */}
+
+            <Slider
+                orientation="vertical"
+                style={{ color: "white", height: "180px" }}
+                // getAriaValueText="Brush Size"
+                defaultValue={brushSize}
+                value={brushSize}
+                onChange={changeBrushSize}
+                min={5}
+                max={90}
+                aria-labelledby="vertical-slider"
+            />
         </>
     );
 }
@@ -45,7 +59,8 @@ export const GridChecker = () => {
     }
     return (
         <>
-            <input type="checkbox" onChange={toggleGridVisibility} checked={showGrid} />
+            {/* <input type="checkbox" onChange={toggleGridVisibility} checked={showGrid} /> */}
+            <Checkbox style={{ color: "white" }} onChange={toggleGridVisibility} checked={showGrid} />
         </>
     );
 }
