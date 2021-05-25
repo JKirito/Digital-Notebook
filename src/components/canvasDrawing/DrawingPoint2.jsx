@@ -34,6 +34,7 @@ const Header = () => {
     let dispatch = useDispatch();
     let history = useHistory();
     const AddPage = () => {
+        // BackPage();
         dispatch(action_AddPage({ total_page: total_page, current_notebook_data: current_notebook_data, doc_name: doc_name }))
         // dispatch({
         //     type: ActionTypes.setNotebookTotalPage,
@@ -92,11 +93,11 @@ const Header = () => {
         history.goBack();
     }
     return <React.Fragment>
-        <Grid container className="d_headeronly" alignContent='center' justify='space-between' style={{ color: "white", padding: "0 20px" }}>
+        <Grid container className="d_headeronly" alignContent='center' justify='space-between' style={{ color: "white", padding: "0 10px" }}>
             <Grid item>
                 <Grid container alignItems='center' style={{ height: "100%" }}>
                     <Grid item>
-                        <IconButton onClick={GoBack} style={{ color: "white" }}>
+                        <IconButton size='small' onClick={GoBack} style={{ color: "white" }}>
                             <ArrowBack />
                         </IconButton>
                     </Grid>
@@ -106,10 +107,10 @@ const Header = () => {
                 </Grid>
             </Grid>
             <Grid item >
-                <Grid container alignItems='center' justify='center' direction='row'>
+                <Grid container alignItems='center' justify='center' style={{ height: "100%" }} direction='row'>
                     <Grid item>
                         {/* <Button>Left</Button> */}
-                        <IconButton onClick={BackPage} style={{ color: "white" }}>
+                        <IconButton size='small' onClick={BackPage} style={{ color: "white" }}>
                             <ArrowBack />
                         </IconButton>
                     </Grid>
@@ -122,7 +123,7 @@ const Header = () => {
                     </Grid>
                     <Grid item>
                         {/* <Button>Right</Button> */}
-                        <IconButton onClick={ForwardPage} style={{ color: "white" }}>
+                        <IconButton size='small' onClick={ForwardPage} style={{ color: "white" }}>
                             <ArrowForward />
                         </IconButton>
                     </Grid>
