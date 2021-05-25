@@ -354,7 +354,7 @@ export const action_addRealTimeListener = () => {
                                     myClassList.push(querySnapshot.data());
                                 } else {
                                     // console.log('Updating')
-                                    let index = myClassList.findIndex(x => x.classname == querySnapshot.data().classname);
+                                    let index = myClassList.findIndex(x => x.classname === querySnapshot.data().classname);
                                     myClassList[index] = querySnapshot.data();
                                     // console.dir(documentList[index]);
                                 }
@@ -409,7 +409,7 @@ export const action_addRealTimeListener = () => {
                                     myEnrolledClassList.push(querySnapshot.data());
                                 } else {
                                     // console.log('Updating')
-                                    let index = myEnrolledClassList.findIndex(x => x.classname == querySnapshot.data().classname);
+                                    let index = myEnrolledClassList.findIndex(x => x.classname === querySnapshot.data().classname);
                                     myEnrolledClassList[index] = querySnapshot.data();
                                     // console.dir(documentList[index]);
                                 }
