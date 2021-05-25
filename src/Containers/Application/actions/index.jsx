@@ -1,6 +1,7 @@
 import { ActionTypes, FirebaseCollections } from "../Actiontypes";
 import { auth, db, storage, timestamp } from "../firebase";
 import { Schema } from "./DataSchema";
+import { jsPDF } from "jspdf";
 
 export const action_AutomaticDetectLogin = (user) => {
     return async (dispatch, getState) => {
@@ -162,15 +163,15 @@ export const action_CreateNewNotebook = ({ notebookname, uid }) => {
 // Currently Working for One Page only.
 export const action_SaveNotebook = ({ data, current_page, doc_name, doc_data, total_page }) => {
     return (dispatch, getState) => {
-        console.dir(data);
+        // console.dir(data);
         // console.dir(JSON.stringify(doc_data));
         let index = data.findIndex(el => el.page === current_page);
-        console.dir(index);
+        // console.dir(index);
         if (index >= 0) {
-            console.log('Found And Updating')
+            // console.log('Found And Updating')
             data[index].data = JSON.stringify(doc_data);
         }
-        console.log(data);
+        // console.log(data);
         db.collection(FirebaseCollections.users).doc(auth.currentUser.uid).collection(FirebaseCollections.notebooks).doc(doc_name).set({
             notebook_currentpage: current_page,
             notebook_totalpage: total_page,
@@ -666,6 +667,119 @@ export const action_uploadAssignment = ({ file, classname, topic }) => {
         alert('Assignment Submitted Successfully')
         // console.log(snapshot.docs[0].data())
     }
+}
+
+
+export const action_ExportNotebook = (data, canvasReducerData, doc_name) => {
+    return async (dispatch, getState) => {
+        // console.dir(data)
+        // console.dir(canvasReducerData.canvasOperations)
+        let doc;
+        if (canvasReducerData.canvasWidth < 500) {
+            doc = new jsPDF("p", "px", [canvasReducerData.canvasHeight, canvasReducerData.canvasWidth]);
+        } else {
+            doc = new jsPDF("l", "px", [canvasReducerData.canvasHeight, canvasReducerData.canvasWidth]);
+        }
+        let width = doc.internal.pageSize.getWidth();
+        let height = doc.internal.pageSize.getHeight();
+
+        for (let i = 0; i < data.length; i++) {
+            let imgData = await DrawDataToCanvas(data[i].data, canvasReducerData);
+            // await AddDataToPdf(doc, i, data.length, imgData, doc_name);
+            doc.addImage(imgData, "JPEG", 0, 0);
+            if (i !== data.length - 1) {
+                doc.addPage();
+            }
+        }
+        doc.save(doc_name);
+    }
+}
+// const AddDataToPdf = async (doc, i, length, imgData, doc_name) => {
+//     // return async (dispatch, getState) => {
+//     doc.addImage(imgData, "jpeg", 0, 0);
+//     if (i !== length - 1) {
+//         doc.addPage();
+//     }
+//     // }
+// }
+
+const DrawDataToCanvas = async (drawingData, canvasReducerData) => {
+    let drawCanvas = document.createElement('canvas');
+    let drawCanvasctx = drawCanvas.getContext("2d")
+    drawCanvas.width = canvasReducerData.canvasWidth;
+    drawCanvas.height = canvasReducerData.canvasHeight;
+    drawCanvasctx.fillStyle = "white";
+    drawCanvasctx.fillRect(0, 0, canvasReducerData.canvasWidth, canvasReducerData.canvasHeight);
+
+    // console.log(`Type:- ${typeof (drawingData)}`);
+    if (typeof (drawingData) === "string") {
+        // console.log("Parsing Data")
+        drawingData = JSON.parse(drawingData);
+    } else {
+        drawingData = drawingData;
+        // console.log("NO Parsing Needed")
+    }
+    // console.log("Data:- ", drawingData);
+    // console.log(canvasReducerData);
+    drawCanvasctx.clearRect(0, 0, canvasReducerData.canvasWidth, canvasReducerData.canvasHeight);
+    drawCanvasctx.fillStyle = "white";
+    drawCanvasctx.fillRect(0, 0, canvasReducerData.canvasWidth, canvasReducerData.canvasHeight);
+    if (drawingData?.length > 0) {
+        drawingData.forEach((ele) => {
+            let pointData = ele.pointData;
+            // console.dir(ele);
+            drawCanvasctx.lineWidth = ele.brushRadius;
+            drawCanvasctx.strokeStyle = ele.brushColor;
+            // console.log(ele.canvasOperation);
+            if (ele.canvasOperation === canvasReducerData.canvasOperations.draw) {
+                // console.log("Converting to Drawing", ele.canvasOperation, canvasOperation.draw)
+                drawCanvasctx.globalCompositeOperation = canvasReducerData.canvasCompositeOperations.draw;
+            } else if (ele.canvasOperation === canvasReducerData.canvasOperations.erase) {
+                // console.log("Converting to Eraser", ele.canvasOperation, canvasOperation.draw)
+                drawCanvasctx.globalCompositeOperation = canvasReducerData.canvasCompositeOperations.eraser;
+            }
+            // console.log(canvasCompositeOperation.draw, ele.canvasOperation);
+            // console.log(drawCanvasctx.globalCompositeOperation);
+            drawCanvasctx.lineJoin = "round";
+            drawCanvasctx.lineCap = "round";
+            drawCanvasctx.beginPath();
+            let p1 = pointData[0];
+            let p2 = pointData[1];
+            // console.log(DrawingData)
+            if (p1) {
+                drawCanvasctx.beginPath();
+                drawCanvasctx.moveTo(p1.x, p1.y);
+                for (let i = 1, len = pointData.length; i < len; i++) {
+                    // we pick the point between pi+1 & pi+2 as the
+                    // end point and p1 as our control point
+                    let midPoint = midPointBtw(p1, p2);
+                    drawCanvasctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+                    p1 = pointData[i];
+                    p2 = pointData[i + 1];
+                }
+                drawCanvasctx.lineTo(p1.x, p1.y);
+                drawCanvasctx.stroke();
+            }
+            drawCanvasctx.closePath();
+        })
+    }
+    // let templink = document.createElement('image');
+    let img = drawCanvas.toDataURL("image/jpeg", 0.5);
+    return img;
+    // templink.download = "page.png"
+    // templink.src = img;
+    // let doc = new jsPDF();
+    // doc.addImage(img, "PNG", 0, 0);
+    // doc.save("Page.pdf")
+    // templink.click();
+
+}
+
+function midPointBtw(p1, p2) {
+    return {
+        x: p1.x + (p2.x - p1.x) / 2,
+        y: p1.y + (p2.y - p1.y) / 2
+    };
 }
 // export const action_
 

@@ -1,8 +1,9 @@
 import { Button, Grid, IconButton, Typography } from '@material-ui/core';
-import { Add, ArrowBack, ArrowForward } from '@material-ui/icons';
+import { Add, ArrowBack, ArrowForward, GetApp } from '@material-ui/icons';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { action_AddPage, action_SaveNotebook, action_SetCurrentNotebookPage, action_WriteDataToNotebook } from '../../Containers/Application/actions';
+import { useHistory } from 'react-router';
+import { action_AddPage, action_ExportNotebook, action_SaveNotebook, action_SetCurrentNotebookPage, action_WriteDataToNotebook } from '../../Containers/Application/actions';
 import { ActionTypes } from '../../Containers/Application/Actiontypes';
 import { BrushSizeChanger, ColorSelector, DcontainCanvas, GridCanvas, GridChecker, SdrawCanvas } from './components';
 
@@ -11,10 +12,10 @@ import "./DrawingPoint.css";
 function DrawingPoint2() {
     let currentData = useSelector(state => state.NotebookReducer.current_notebook_data);
     // let currentpage = useSelector(state => state.NotebookReducer.current_page);
-    // useEffect(() => {
-    // DrawingData = currentData?.filter(el => el.page === currentpage)[0].data;
-    // console.log(DrawingData);
-    // }, [currentData]);
+    useEffect(() => {
+        // DrawingData = currentData?.filter(el => el.page === currentpage)[0].data;
+        // console.dir(currentData);
+    }, [currentData]);
     return (
         <>
             <CanvasFrame />
@@ -29,13 +30,19 @@ const Header = () => {
     let current_notebook_name = useSelector(state => state.NotebookReducer.current_notebook_name)
     let doc_name = useSelector(state => state.NotebookReducer.current_notebook_name);
     let current_notebook_data = useSelector(state => state.NotebookReducer.current_notebook_data)
+    let canvasReducerData = useSelector(state => state.CanvasReducer);
     let dispatch = useDispatch();
+    let history = useHistory();
     const AddPage = () => {
         dispatch(action_AddPage({ total_page: total_page, current_notebook_data: current_notebook_data, doc_name: doc_name }))
         // dispatch({
         //     type: ActionTypes.setNotebookTotalPage,
         //     payload: total_page + 1,
         // })
+    }
+    const ExportDocument = async () => {
+        // console.dir(current_notebook_data)
+        dispatch(action_ExportNotebook(current_notebook_data, canvasReducerData, doc_name));
     }
     const BackPage = () => {
         // let x = current_notebook_data;
@@ -81,12 +88,20 @@ const Header = () => {
         }));
 
     }
+    const GoBack = () => {
+        history.goBack();
+    }
     return <React.Fragment>
         <Grid container className="d_headeronly" alignContent='center' justify='space-between' style={{ color: "white", padding: "0 20px" }}>
             <Grid item>
                 <Grid container alignItems='center' style={{ height: "100%" }}>
                     <Grid item>
-                        <Typography variant='subtitle1'>{current_notebook_name}</Typography>
+                        <IconButton onClick={GoBack} style={{ color: "white" }}>
+                            <ArrowBack />
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant='subtitle1' style={{ marginLeft: "10px" }}>{current_notebook_name}</Typography>
                     </Grid>
                 </Grid>
             </Grid>
@@ -114,9 +129,18 @@ const Header = () => {
                 </Grid>
             </Grid>
             <Grid item>
-                <IconButton onClick={AddPage} style={{ color: "white" }}>
-                    <Add />
-                </IconButton>
+                <Grid container >
+                    <Grid item>
+                        <IconButton onClick={AddPage} style={{ color: "white" }}>
+                            <Add />
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <IconButton onClick={ExportDocument} style={{ color: "white" }}>
+                            <GetApp />
+                        </IconButton>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </React.Fragment>;
