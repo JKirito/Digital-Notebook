@@ -11,12 +11,18 @@ This project solves the problem of having a notebook all the time for taking not
 ### Technologies
 * React JS - (Frontend UI)
 * Material UI/Icons - Google Based UI/Icons Library
+* Redux - For State Management
+* Redux-thunk - For Async Operations
 * Firebase - For Backend Database
+* JSPDF - For Pdf Generation
+* React-Router-Dom - For Routing in React
+* Styled Components - For Some Extra Styling
 * Everything else is done by Vanilla JS. No Other Library Used
 
 ### Functionalities
 
 * Everything is RealTime
+* Private Routes for Logged In Users
 * Users
 	* Login
 	* Create Account
