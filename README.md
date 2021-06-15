@@ -16,6 +16,7 @@ This project solves the problem of having a notebook all the time for taking not
 
 ### Functionalities
 
+* Everything is RealTime
 * Users
 	* Login
 	* Create Account
