@@ -17,6 +17,7 @@ This project solves the problem of having a notebook all the time for taking not
 * JSPDF - For Pdf Generation
 * React-Router-Dom - For Routing in React
 * Styled Components - For Some Extra Styling
+* Framer-Motion - For Page Transitions
 * Everything else is done by Vanilla JS. No Other Library Used
 
 ### Functionalities
